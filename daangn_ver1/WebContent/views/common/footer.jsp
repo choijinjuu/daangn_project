@@ -14,10 +14,8 @@
             margin: auto;
             font-size: 13px;
             color: rgb(85, 85, 85);
-            /* background-color: blue; */
         }
         #footer_1{
-            /* background-color: antiquewhite; */
             padding: 5px 0 0 0;
             letter-spacing: 1px;
         }

@@ -1,15 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	//프로젝트 contextPath 설정
+	String contextPath = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
+	<!-- 다음 주소 검색 API 스크립트 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
     <style>
         .menubar_wrap{
-            /* background-color: red; */
             width: 1255px;
             height: 60px;
             margin: 0 auto;
@@ -21,32 +27,25 @@
             height: 100%;
         }
         #banner{
-            /* background-color: antiquewhite; */
             width: 105px;
         }
         #banner div{
         	width: 100%;
         }
         #banner a{
-        	/* margin-top: 10px; */
-        	/* background-color: blue; */
         	width: 85px;
             height: 40px;
             display: block;
             margin: 8px 0 0 8px;
         }
         #menu{
-            /* background-color: aqua; */
             width: 670px;
-            /* margin-left: 30px; */
         }
         #search{
-            /* background-color: aquamarine; */
             width: 360px;
             margin-left: -10px;
         }
         #loginbar{
-            /* background-color: blue; */
             width: 120px;
             margin-left: 10px;
         }
@@ -75,7 +74,6 @@
         #search_text{
             height: 65%;
             width: 80%;
-            /* background-color: blueviolet; */
             margin-top: 8px;
         }
         #text_area{
@@ -94,7 +92,6 @@
             margin-left: 13px;
             margin-top: 10px;
             border-radius: 10px;
-            /* background-color: blue; */
         }
         #search_img button{
         	height: 100%;
@@ -119,16 +116,26 @@
         #loginbar span{
         	cursor: default;
         }
+        /* 버튼 기본 CSS */
+        .btn_el button{
+			border-radius: 10px;
+			border: 0.1em solid black;
+        	background-color: white;
+		}
+		.btn_el button:hover{
+        	background-color: rgb(244, 244, 244);
+        	cursor: pointer;
+        }
     </style>
 
 </head>
 <body>
     <div class="menubar_wrap">
         <div class="menubar_el1" id="banner">
-            <div id="banner_img"><a href=""><img src="resources/css_img/logo.png" alt="" style="width: 85px; height: 40px;"></a></div>
+            <div id="banner_img"><a href="<%=contextPath %>"><img src="resources/css_img/logo.png" alt="" style="width: 85px; height: 40px;"></a></div>
         </div>
         <div class="menubar_el1" id="menu">
-            <div id="flea"><a href="" id="flea">중고거래</a></div>
+            <div id="flea"><a href="<%=contextPath %>" id="flea">중고거래</a></div>
             <div id="market"><a href="" id="store">동네가게</a></div>
             <div id="job"><a href="" id="job">알바</a></div>
         </div>
@@ -139,7 +146,7 @@
         <div class="menubar_el1" id="loginbar">
             <a href="">로그인</a>
             <span>/</span>
-            <a href="">회원가입</a>
+            <a href="<%=contextPath%>/enrollForm.me">회원가입</a>
         </div>
     </div>
 </body>

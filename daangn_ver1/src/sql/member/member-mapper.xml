@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<!-- 회원가입 -->
+	<entry key="insertMember">
+		INSERT INTO MEMBER(MEMBER_NO,
+							MEMBER_ID,
+							MEMBER_PWD,
+							ADDRESS,
+							EMAIL,
+							ENROLL_DATE)
+					VALUES(SEQ_MNO.NEXTVAL,
+							?,
+							?,
+							?,
+							?,
+							SYSDATE)
+	</entry>
+	
+	<!-- 로그인 -->
+	<entry key="loginMember">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_ID = ?
+		AND MEMBER_PWD = ?
+	</entry>
+</properties>

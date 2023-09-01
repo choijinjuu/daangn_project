@@ -87,22 +87,22 @@
 			<hr>
 		</div>
         <div id="enroll_form">
-            <form action="">
+            <form action="<%=contextPath%>/insert.me" method="post" onsubmit="return mem_insert();">
                 <div class="enroll_area">
                 	<span><strong>아이디</span><br>
-	                <input class="enroll_area2" type="text">            
+	                <input class="enroll_area2" type="text" name="memberId" id="memberId">            
                 </div>
                 <div class="enroll_area">
                 	<span><strong>비밀번호</span><br>
-	                <input class="enroll_area2" type="password">            
+	                <input class="enroll_area2" type="password" name="memberPwd" id="memberPwd">            
                 </div>
                 <div class="enroll_area">
                 	<span><strong>비밀번호 확인</span><br>
-	                <input class="enroll_area2" type="password">            
+	                <input class="enroll_area2" type="password" name="memberPwdCk" id="memberPwdCk">            
                 </div>
                 <div class="enroll_area">
                 	<span><strong>이메일</span><br>
-	                <input class="enroll_area2" type="email">            
+	                <input class="enroll_area2" type="email" name="email" id="email">            
                 </div>
                 <div class="enroll_area">
                 	<span><strong>주소</span><br>
@@ -119,6 +119,23 @@
     </div>
     
     <script>
+		//회원가입 버튼 클릭시
+    	function mem_insert(){
+			var memberId = document.getElementById("memberId");
+    		var memberPwd = document.getElementById("memberPwd");
+    		var memberPwdCk = document.getElementById("memberPwdCk");
+    		
+	    	/* 회원가입 버튼 버튼 클릭시 비밀번호, 비밀번호 확인 CK */
+	    	if(memberPwd.value==memberPwdCk.value){
+	    		return true;
+	    	}else{
+	    		//포커스 비밀번호 창으로 옮겨주기
+				memberPwd.focus();
+	    		alert("비밀번호와 비밀번호 확인 값이 일치하지 않습니다.");
+	    		return false;
+	    	}
+    	}
+    
     	/* 다음 주소 검색 API */
     	function postcode(){
 		    new daum.Postcode({

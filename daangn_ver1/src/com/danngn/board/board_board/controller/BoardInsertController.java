@@ -1,4 +1,4 @@
-package com.danngn.member.comtroller;
+package com.danngn.board.board_board.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class MemberEnrollController
+ * Servlet implementation class BoardInsertController
  */
-@WebServlet("/enrollForm.me")
-public class MemberEnrollController extends HttpServlet {
+//게시글 작성 서블릿
+@WebServlet("/insert.bo")
+public class BoardInsertController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberEnrollController() {
+    public BoardInsertController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,18 +27,18 @@ public class MemberEnrollController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
+
 		//요청 주소로 위임
-		request.getRequestDispatcher("views/member/memberEnrollForm.jsp").forward(request, response);
+		request.getRequestDispatcher("views/board/boardInsertForm.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+
+		
+	
 	}
 
 }

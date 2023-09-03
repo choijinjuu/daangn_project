@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<!-- 게시글 등록 -->
+	<entry key="insertBoard">
+		INSERT INTO BOARD(BOARD_NO,
+							MEMBER_NO,
+							TITLE,
+							CONTENT,
+							COUNT,
+							CREATE_DATE)
+					VALUES(SEQ_BNO.NEXTVAL,
+							?,
+							?,
+							?,
+							0,
+							SYSDATE)
+	</entry>
+	
+	<!-- 중고거래 등록 -->
+	<entry key="insertFlea">
+		INSERT INTO FLEAMARKET(BOARD_NO,
+								CATEGORY,
+								PRICE)
+					VALUES(SEQ_BNO.CURRVAL,
+							?,
+							?)
+	</entry>
+	
+	<!-- 동네가게 등록 -->
+	<entry key="insertStores">
+		INSERT INTO STORES(BOARD_NO,
+								CATEGORY,
+								OPEN_TIME,
+								CLOSE_TIME,
+								ADDRESS)
+					VALUES(SEQ_BNO.CURRVAL,
+							?,
+							?,
+							?,
+							?)
+	</entry>
+	
+	<!-- 알바 등록 -->
+	<entry key="insertJobs">
+		INSERT INTO JOBS(BOARD_NO,
+								ADDRESS,
+								JOB_DATE)
+					VALUES(SEQ_BNO.CURRVAL,
+							?,
+							?)
+	</entry>
+	
+	<!-- 첨부파일 등록 -->
+	<entry key="insertAttach">
+		INSERT INTO ATTACHMENT(FILE_NO,
+								BOARD_NO,
+								AT_NAME,
+								AT_CHANGE,
+								AT_PATH,
+								AT_DATE,
+								FILE_LEVEL)
+					VALUES(SEQ_ANO.NEXTVAL,
+							SEQ_BNO.CURRVAL,
+							?,
+							?,
+							?,
+							SYSDATE,
+							?)
+	</entry>
+
+</properties>

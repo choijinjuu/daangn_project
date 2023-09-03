@@ -19,7 +19,7 @@
 		}
 		#fleaDe_img_area{
 			height: 505px;
-			background-color: blue;
+			/* background-color: blue; */
 			margin-top: 25px;
 		}
 		#fleaDe_img_area img{
@@ -29,7 +29,7 @@
 		}
 		#fleaDe_title_area{
 			height: 80px;
-			background-color: red;
+			/* background-color: red; */
 		}
 		#fleaDe_title_area>div{
 			float: left;
@@ -37,7 +37,7 @@
 		#flea_profile_area{
 			height: 50px;
 			width: 8%;
-			background-color: blue;
+			/* background-color: blue; */
 			margin-top: 15px;
 			border-radius: 100px;
 		}
@@ -52,7 +52,7 @@
 		#flea_id_area{
 			height: 45px;
 			margin-top: 21px;
-			background-color: yellow;
+			/* background-color: yellow; */
 		}
 		#flea_id_area:hover{
 			/* a태그 밑줄 나오게 */

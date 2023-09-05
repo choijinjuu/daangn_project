@@ -310,6 +310,10 @@
 	
 	<script>
 	
+		/* window.onload = function(){
+			location.href = "/daangn_ver1/List.bo";
+		} */
+	
 		//플리마켓 상세페이지로 가는 함수
 		function fleaGo(){
 			location.href="/daangn_ver1/fleaDetail.bo";

@@ -68,5 +68,12 @@
 							SYSDATE,
 							?)
 	</entry>
+	
+	<!-- 중고거래 리스트 조회 -->
+	<entry key="selectFleaList">
+		SELECT *
+		FROM BOARD
+		JOIN FLEAMARKET USING(BOARD_NO)
+	</entry>
 
 </properties>

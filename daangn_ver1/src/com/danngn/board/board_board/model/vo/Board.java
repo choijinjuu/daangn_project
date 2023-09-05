@@ -38,6 +38,19 @@ public class Board {
 		this.address = address;
 		this.jobDate = jobDate;
 	}
+	//중고거래 생성자
+	public Board(int boardNo, int memberNo, String title, String content, int count, String createDate, int category,
+			int price) {
+		super();
+		this.boardNo = boardNo;
+		this.memberNo = memberNo;
+		this.title = title;
+		this.content = content;
+		this.count = count;
+		this.createDate = createDate;
+		this.category = category;
+		this.price = price;
+	}
 	public Board(int boardNo, int memberNo, String title, String content, int count, String createDate, int category,
 			int price, String openTime, String closeTime, String address, String jobDate) {
 		super();

@@ -33,4 +33,18 @@ public class BoardService {
 		return result*result2;
 	}
 
+	//중고거래 리스트
+	public ArrayList<Board> selectFleaList() {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		ArrayList<Board> list = new BoardDao().selectFleaList(conn);
+		
+		JDBCTemplate.close(conn);
+		
+		return list;
+	}
+
+	
+
 }

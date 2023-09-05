@@ -155,8 +155,8 @@
         </div>
         <div class="menubar_el1" id="menu">
             <div id="flea"><a href="<%=contextPath %>" id="flea">중고거래</a></div>
-            <div id="market"><a href="" id="store">동네가게</a></div>
-            <div id="job"><a href="" id="job">알바</a></div>
+            <div id="market"><a href="<%=contextPath %>/storesForm.bo" id="store">동네가게</a></div>
+            <div id="job"><a href="<%=contextPath %>/jobsForm.bo" id="job">알바</a></div>
         </div>
         <div class="menubar_el1" id="search">
             <div id="search_text"><input type="text" id="text_area" placeholder="&nbsp;물품이나 동네를 검색해보세요!"></div>

@@ -39,8 +39,10 @@ public class BoardInsertController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		//ArrayList<Board> list = new BoardService().selectFleaList();
+		
 		//요청 주소로 위임
-		request.getRequestDispatcher("views/board/boardInsertForm.jsp").forward(request, response);
+		//request.getRequestDispatcher("views/board/boardInsertForm.jsp").forward(request, response);
 	}
 
 	/**

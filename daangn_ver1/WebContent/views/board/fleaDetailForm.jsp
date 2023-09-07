@@ -37,7 +37,7 @@
 		#flea_profile_area{
 			height: 50px;
 			width: 8%;
-			/* background-color: blue; */
+			background-color: blue;
 			margin-top: 15px;
 			border-radius: 100px;
 		}
@@ -64,6 +64,17 @@
 			font-size: 13px;
 			color: rgb(135, 135, 135);
 			margin-top: 2px;
+		}
+		#flea_btn_area{
+			/* background-color: yellow; */
+			margin-left: 410px;
+			margin-top: 35px;
+		}
+		#flea_btn_area button{
+			border-radius: 3px;
+			border: 0.1em solid rgb(135, 135, 135);
+			color: rgb(135, 135, 135);
+        	background-color: white;
 		}
 		#flea_title{
 			/* background-color: red; */
@@ -105,6 +116,10 @@
 			<div id="flea_id_area">
 				<div id="flea_id"><a><strong>아스크림사러</strong></a></div>
 				<div id="flea_address">서울 관악구 신림동</div>
+			</div>
+			<div id="flea_btn_area">
+				<button>수정</button>
+				<button>삭제</button>
 			</div>
 		</div>
 		<hr style="border: 0.1px solid rgb(224, 224, 224); width: 680px;">

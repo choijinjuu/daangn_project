@@ -78,7 +78,8 @@ public class MemberDao {
 								,rset.getString("MEMBER_PWD")
 								,rset.getString("ADDRESS")
 								,rset.getString("EMAIL")
-								,rset.getString("ENROLL_DATE"));
+								,rset.getString("ENROLL_DATE")
+								,rset.getString("PROFILE_IMG"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -19,17 +19,17 @@ import com.danngn.common.vo.Attachment;
 import com.oreilly.servlet.MultipartRequest;
 
 /**
- * Servlet implementation class BoardInsertController
+ * Servlet implementation class BoardUpdateController
  */
-//게시글 작성 서블릿
-@WebServlet("/insert.bo")
-public class BoardInsertController extends HttpServlet {
+//게시글 수정
+@WebServlet("/update.bo")
+public class BoardUpdateController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BoardInsertController() {
+    public BoardUpdateController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,15 +38,24 @@ public class BoardInsertController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//요청 주소로 위임
-		request.getRequestDispatcher("views/board/boardInsertForm.jsp").forward(request, response);
+
+		//수정 페이지 들어올시 정보 가져와서 뿌려주기
+		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+		
+		Board b = new BoardService().fleaDetail(boardNo);
+		
+		request.setAttribute("board", b);
+		
+		request.getRequestDispatcher("views/board/boardUpdateForm.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
+		request.setCharacterEncoding("UTF-8");
+		
 		//멀티파트로 받기
 		if(ServletFileUpload.isMultipartContent(request)) {
 			
@@ -60,6 +69,7 @@ public class BoardInsertController extends HttpServlet {
 			int price = 0;
 			String subCategory = null;
 			
+			int boardNo = Integer.parseInt(multiRequest.getParameter("boardNo"));
 			String category = multiRequest.getParameter("category");
 			int memberNo = Integer.parseInt(multiRequest.getParameter("memberNo"));
 			String title = multiRequest.getParameter("title");
@@ -94,6 +104,7 @@ public class BoardInsertController extends HttpServlet {
 
 				if(multiRequest.getOriginalFileName(key) !=null ) {
 					Attachment at = new Attachment();
+						at.setBoardNo(boardNo);
 						at.setAtName(multiRequest.getOriginalFileName(key));
 						at.setAtChange(multiRequest.getFilesystemName(key));
 						at.setAtPath("/resources/board_img/");
@@ -106,17 +117,17 @@ public class BoardInsertController extends HttpServlet {
 					list.add(at);
 				}	
 			}
-			Board b = new Board(memberNo, title, content, category, price, subCategory, openTime, closeTime, address, jobDate);
-			
+			Board b = new Board(boardNo, memberNo, title, content, category, price, subCategory, openTime, closeTime, address, jobDate);
+
 			int result = 0;
 			
-			result = new BoardService().insertBoard(category, b,list);
+			result = new BoardService().updateBoard(category, b,list);
 			
-			if(result>0) {//게시글 작성 완료시
-				request.getSession().setAttribute("alertMsg", "게시글 작성 완료!");
+			if(result>0) {//게시글 수정 완료시
+				request.getSession().setAttribute("alertMsg", "게시글 수정 완료!");
 				response.sendRedirect(request.getContextPath());
 			}else {//게시글 작성 실패시
-				request.setAttribute("errorMsg", "게시글 작성에 실패하셨습니다.");
+				request.setAttribute("errorMsg", "게시글 수정에 실패하셨습니다.");
 				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 				if(list!=null) {
 					for(int i=0; i<list.size(); i++) {
@@ -127,5 +138,7 @@ public class BoardInsertController extends HttpServlet {
 			}
 	
 		}
+	
 	}
+
 }

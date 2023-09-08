@@ -1,8 +1,6 @@
 package com.danngn.board.board_board.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,20 +8,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.danngn.board.board_board.model.service.BoardService;
-import com.danngn.board.board_board.model.vo.Board;
 
 /**
- * Servlet implementation class BoardListController
+ * Servlet implementation class DeleteController
  */
-/* 게시글 조회 */
-@WebServlet("/List.bo")
-public class BoardListController extends HttpServlet {
+//게시물 삭제
+@WebServlet("/delete.bo")
+public class DeleteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BoardListController() {
+    public DeleteController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,16 +29,18 @@ public class BoardListController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 		
-		ArrayList<Board> list = new BoardService().selectFleaList();
+		int result = new BoardService().deleteBoard(boardNo);
 		
-		System.out.println(list);
-		
-		request.setAttribute("list", list);
-		
-		//요청 주소로 위임
-		request.getRequestDispatcher("index.jsp").forward(request, response);
-		
+		if(result > 0) {
+			request.getSession().setAttribute("alertMsg", "게시글 삭제 완료");
+			response.sendRedirect(request.getContextPath()+"/List.bo?currentPage=1&category=0");
+		}else {
+			request.setAttribute("errorMsg", "게시글 삭제 실패");
+			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+		}
 	}
 
 	/**

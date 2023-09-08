@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	
+	<!-- 댓글 작성 -->
+	<entry key="insertReply">
+		INSERT INTO REPLY(REPLY_NO,
+                    BOARD_NO,
+                    MEMBER_NO,
+                    CONTENT,
+                    CREATE_DATE,
+                    SECRET)
+            VALUES(SEQ_RNO.nextval,
+                    ?,
+                    ?,
+                    ?,
+                    SYSDATE,
+                    ?)
+	</entry>
+	
+	<!-- 댓글 목록 불러오기 -->
+	<entry key="selectReply">
+		SELECT *
+		FROM REPLY
+		WHERE BOARD_NO = ?
+		ORDER BY CREATE_DATE DESC
+	</entry>
+	
+</properties>

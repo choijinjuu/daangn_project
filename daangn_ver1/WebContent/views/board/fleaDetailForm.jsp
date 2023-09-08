@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    import = "com.danngn.board.board_board.model.vo.Board"%>
+<%
+	/* 게시물 꺼내기 */
+	Board b = (Board)request.getAttribute("Board");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +14,6 @@
 	<style>
 		#fleaDe_wrap{
 			width: 800px;
-			height: 800px;
-			/* background-color: red; */
 			margin: auto;
 		}
 		.flea_all{
@@ -19,7 +22,6 @@
 		}
 		#fleaDe_img_area{
 			height: 505px;
-			/* background-color: blue; */
 			margin-top: 25px;
 		}
 		#fleaDe_img_area img{
@@ -29,7 +31,6 @@
 		}
 		#fleaDe_title_area{
 			height: 80px;
-			/* background-color: red; */
 		}
 		#fleaDe_title_area>div{
 			float: left;
@@ -46,16 +47,9 @@
 			height: 100%;
 			border-radius: 100px;
 		}
-		#flea_profile img:hover{
-			/* a태그 밑줄 나오게 */
-		}
 		#flea_id_area{
 			height: 45px;
 			margin-top: 21px;
-			/* background-color: yellow; */
-		}
-		#flea_id_area:hover{
-			/* a태그 밑줄 나오게 */
 		}
 		#flea_id{
 			font-size: 15px;
@@ -66,7 +60,6 @@
 			margin-top: 2px;
 		}
 		#flea_btn_area{
-			/* background-color: yellow; */
 			margin-left: 410px;
 			margin-top: 35px;
 		}
@@ -76,8 +69,12 @@
 			color: rgb(135, 135, 135);
         	background-color: white;
 		}
+		#flea_btn_area button:hover{
+			background-color: rgb(235, 235, 235);
+			color: rgb(75, 75, 75);
+			cursor: pointer;
+		}
 		#flea_title{
-			/* background-color: red; */
 			height: 58px;
 			width: 680px;
 			margin: auto;
@@ -85,7 +82,6 @@
 			line-height: 4.5;
 		}
 		#flea_cate{
-			/* background-color: blue; */
 			height: 23px;
 			font-size: 14px;
 			color: rgb(135, 135, 135);
@@ -96,9 +92,97 @@
 		#flea_all_el2 pre{
 			width: 680px;
 			margin: auto;
-			/* background-color: red; */
+			padding-bottom: 20px;
 			font-size: 17px;
-			color: rgb(55, 55, 55);;
+			color: rgb(55, 55, 55);
+			white-space: pre-wrap;
+		}
+		#reply_delete_area{
+			float: right;
+			margin-top: 5px;
+		}
+		#reply_delete_area button{
+			border: 0.5px solid rgb(129, 129, 129);
+			border-radius: 5px;
+		}
+		#reply_delete_area button:hover{
+			background-color: rgb(235, 235, 235);
+			cursor: pointer;
+		}
+		#reply_area{
+			height: 110px;
+			width: 660px;
+			margin: auto;
+		}
+		#reply_area_1{
+			width: 650px;
+			margin: auto;
+			border-bottom: 0.5px solid rgb(129, 129, 129);
+		}
+		#reply_area_1 pre{
+			padding-left: 10px;
+		}
+		#writer_date{
+			font-size: 13px;
+			margin-left: 10px;
+			padding: 0 0 5px 0;
+			color: rgb(129, 129, 129);
+		}
+		#reply_write{
+			border: 1px solid black;
+			padding: 15px;
+			margin: auto;
+			width: 640px;
+			height: 160px;
+			border: 0.5px solid rgb(129, 129, 129);
+		}
+		.writer_profile{
+			height: 35px;
+		}
+		.writer_profile>div{
+			float: left;
+		}
+		#witer_img{
+			width: 40px;
+			height: 35px;
+			background-color: red;
+			border-radius: 50px;
+		}
+		.writer_profile button{
+			background-color: white;
+			cursor: pointer;
+			border: 0px;
+		}
+		.writer_profile span{
+			margin-left: 5px;
+			line-height: 2.3;
+			font-size: 15px;
+		}
+		#reply_write textarea{
+			width: 635px;
+			height: 80px;
+			border: 0px;
+			margin-top: 3px;
+			resize: none;
+			padding: 5px;
+		}
+		#writer_btn{
+			border-top: 1px solid rgb(129, 129, 129);
+		}
+		#writer_btn button{
+			margin-top: 5px;
+			height: 30px;
+			float: right;
+			background-color: white;
+			border: 0.5px solid rgb(129, 129, 129);
+			border-radius: 5px;
+		}
+		#writer_btn button:hover{
+			background-color: rgb(235, 235, 235);
+			cursor: pointer;
+		}
+		#reply_secret{
+			margin-right: 5px;
 		}
 	</style>
 	
@@ -109,34 +193,204 @@
 	
 	<div id="fleaDe_wrap">
 		<div class="flea_all" id="fleaDe_img_area">
-			<img src="">
+			<img src="<%=contextPath + b.getProfileImg()%>">
 		</div>
 		<div class="flea_all" id="fleaDe_title_area">
 			<div id="flea_profile_area"><img src=""></div>
 			<div id="flea_id_area">
-				<div id="flea_id"><a><strong>아스크림사러</strong></a></div>
-				<div id="flea_address">서울 관악구 신림동</div>
+				<div id="flea_id"><a><strong><%=b.getWriter() %></strong></a></div>
+				<div id="flea_address"><%=b.getAddress() %></div>
 			</div>
 			<div id="flea_btn_area">
-				<button>수정</button>
-				<button>삭제</button>
+				<%if (loginMember!=null && loginMember.getMemberId().equals(b.getWriter())) {%>
+					<!-- 로그인 되어있으며 게시글 작성자일때 -->
+					<button type="button" onclick="location.href='<%=contextPath%>/update.bo?boardNo=<%=b.getBoardNo()%>'">수정</button>
+					<button type="button" onclick="boardDelete();">삭제</button>				
+				<%}else if (loginMember!=null && !loginMember.getMemberId().equals(b.getWriter()) || loginMember == null) {%>
+					<!-- 로그인 되어있지만 게시글 작성자가 아닐때
+						또는 로그인 안되어있을때 -->
+					<button style="visibility: hidden;">수정</button>
+					<button style="visibility: hidden;">삭제</button>
+				<%}%>
 			</div>
 		</div>
 		<hr style="border: 0.1px solid rgb(224, 224, 224); width: 680px;">
 		<div class="flea_all" id="fleaDe_text_area">
 			<div>
-				<div id="flea_title"><strong>전남친흔적</strong></div>
-				<div id="flea_cate">여성잡화  ∙ 조회수 60</div>
-				<div id="flea_money"><strong>120,000원</strong></div>
+				<div id="flea_title"><strong><%=b.getTitle() %></strong></div>
+				<div id="flea_cate"><%=b.getSubCategory()%>  ∙ 조회수 <%=b.getCount() %></div>
+				<div id="flea_money"><strong><%=b.getPrice() %>원</strong></div>
 			</div>
 			<div id="flea_all_el2">
-				<pre>이러쿵.. 저러쿵...</pre>
+				<pre><%=b.getContent() %></pre>
+			</div>
+		<hr style="border: 0.1px solid rgb(224, 224, 224); width: 680px;">
+		</div>
+		<!-- <div id="reply_area">
+			<div id="reply_area_1">
+				<div class="writer_profile">
+					<div id="witer_img">
+						<img src="">
+					</div>
+					<div><button><span><strong>댓글주인1</strong></span></button></div>
+					<div id="reply_delete_area">
+						<button>삭제</button>
+					</div>
+				</div>
+				<div>
+					<pre>제가 삽니다!</pre>
+				</div>
+				<div id="writer_date">
+					<span>2023.09.07 15:00</span>
+				</div>
 			</div>
 		</div>
-		<div id=fleaDe_reply></div>
+		<div id="reply_area">
+			<div id="reply_area_1">
+				<div class="writer_profile">
+					<div id="witer_img">
+						<img src="">
+					</div>
+					<div><button><span><strong>댓글주인1</strong></span></button></div>
+					<div id="reply_delete_area">
+						<button>삭제</button>
+					</div>
+				</div>
+				<div>
+					<pre>제가 삽니다!</pre>
+				</div>
+				<div id="writer_date">
+					<span>2023.09.07 15:00</span>
+				</div>
+			</div>
+		</div>
+		<div id="reply_area">
+			<div id="reply_area_1">
+				<div class="writer_profile">
+					<div id="witer_img">
+						<img src="">
+					</div>
+					<div><button><span><strong>댓글주인1</strong></span></button></div>
+					<div id="reply_delete_area">
+						<button>삭제</button>
+					</div>
+				</div>
+				<div>
+					<pre>제가 삽니다!</pre>
+				</div>
+				<div id="writer_date">
+					<span>2023.09.07 15:00</span>
+				</div>
+			</div>
+		</div> -->
+		<div id=fleaDe_reply>
+			<div id="reply_write">
+				<div class="writer_profile">
+					<div id="witer_img">
+						<img src="">
+					</div>
+					<div><button><span><strong>댓글주인1</strong></span></button></div>
+				</div>
+				<div>
+					<textarea name="replyContent" id="replyContent" placeholder="우리모두 훈훈해지는 댓글을 남겨주세요!"></textarea>
+				</div>
+				<div id="writer_btn">
+					<button type="button" onclick="insertReply()">글쓰기</button>
+					<button id="reply_secret">비밀댓글</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	<%@ include file = "../common/footer.jsp" %>
+	
+	<script>
+		//게시물 삭제
+		function boardDelete(){
+			var result = confirm("게시물을 정말 삭제하시겠습니까?");
+			
+			if(result){
+				alert("삭제되었습니다.");
+				location.href = "<%=contextPath%>/delete.bo?boardNo=<%=b.getBoardNo()%>";
+			}else{
+				alert("삭제가 취소되었습니다.");
+			}
+		}
+		
+		//댓글 목록
+		function selectReview(){
+	      		$.ajax({
+	      			url : "reply.re",
+	      			data : {boardNo : <%=b.getBoardNo()%>},
+	      			type : "get",
+	      			success : function(rlist){
+						var result = "";
+	      				
+							for(var i in rlist){
+								result +="<div id='reply_area'>"
+										+"<div id='reply_area_1'>"
+										+"<div class='writer_profile'>"
+										+"<div id='witer_img'>"
+										+"<img src=''>"
+										+"</div>"
+										+"<div><button><span><strong>"+rlist[i].memberNo+"</strong></span></button></div>"
+										+"<div id='reply_delete_area'>"
+										+"<button>삭제</button>"
+										+"</div>"
+										+"</div>"
+										+"<div>"
+										+"<pre>"+rlist[i].content+"</pre>"
+										+"</div>"
+										+"<div id='writer_date'>"
+										+"<span>"+rlist[i].createDate+"</span>"
+										+"</div>"
+										+"</div>"
+										+"</div>";
+							}
+							
+							$("#fleaDe_text_area").append(result);
+	      			}
+	      		});
+	      };
+		
+		//댓글 목록 불러오기
+		$(function(){
+      		selectReview();
+      	});
+		
+		//댓글 등록
+		//로그인 되어있다면
+		<%if (loginMember!=null) {%>
+	    	function insertReply(){
+				$.ajax({
+					url : "reply.re?secret=1",
+	        		data : {memberNo : <%=loginMember.getMemberNo()%>,
+	        				boardNo : <%=b.getBoardNo()%>,
+	        				replyContent : $("#replyContent").val()
+	        				},
+	        		type : "post",
+	        		success : function(result){
+	        				if(result>0){
+			        			alert("댓글 작성이 완료되었습니다!");
+			        			$("#replyContent").val("");
+	        					
+			        			selectReview();
+			        			
+		        				<%-- location.replace("<%=request.getContextPath()%>/book.de?pno=<%=p.getProductNo()%>"); --%>
+	        				}else{
+	        					alert("댓글 작성에 실패하셨습니다.");
+	        				}
+		        			
+		        		}
+	        		});
+	        	}
+	      <%}else {%>
+			function insertReply(){
+		      	alert("로그인 후 댓글 작성이 가능합니다.");
+		    }
+	      <%}%>
+	</script>
+	
 	
 </body>
 </html>

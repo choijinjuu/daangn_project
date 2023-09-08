@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    import = "com.danngn.board.board_board.model.vo.Board"%>
+<%
+	/* 게시물 꺼내기 */
+	Board b = (Board)request.getAttribute("board");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -99,7 +104,6 @@
 			width: 100%;
 		}
 	</style>
-
 </head>
 <body>
 	<%@ include file = "../common/header.jsp" %>
@@ -108,11 +112,12 @@
 			<strong>글 등록하기</strong>
 		</div>
 		<div id="content_area">
-			<form action="<%=contextPath %>/insert.bo" method="post" id="content_area_form" enctype="multipart/form-data">
+			<form action="<%=contextPath %>/update.bo?boardNo=<%=b.getBoardNo() %>" method="post" id="content_area_form" enctype="multipart/form-data">
 				<!-- 회원 번호도 넘기기 -->
 				<input type="hidden" name="memberNo" id="memberNo" value="<%=loginMember.getMemberNo()%>">
 				<div class="board_area">
 					<div class="board_area_1"><strong>카테고리 분류</strong></div>
+					<!-- 들어온 카테고리에 따라 -->
 					<div class="board_area_2" id="board_area_2">
 						<select name="category" id="category">
 				            <option value="0">카테고리 분류</option>
@@ -120,6 +125,16 @@
 				            <option value="2">동네가게</option>
 				            <option value="3">알바</option>
 				        </select>
+						<%if (b.getCategory().equals("1")) {%>
+						        <select name="subCategory" id="subCategory" class="newSelect">
+									<option value="1">디지털기기</option>
+									<option value="2">스포츠/레저</option>
+									<option value="3">생활/가전</option>
+									<option value="4">티켓/교환권</option>
+									<option value="5">기타</option>
+								</select>
+						<%}else {%>
+						<%} %>
 					</div>
 				</div>		
 				<div class="board_area">
@@ -131,7 +146,7 @@
 				<div class="board_area">
 					<div class="board_area_1"><strong>작성자</strong></div>
 					<div class="board_area_2">
-						<input type="text" value="<%=loginMember.getMemberId() %>" placeholder="dd" disabled>
+						<input type="text" value="<%=loginMember.getMemberId() %>" disabled>
 					</div>
 				</div>
 				<div class="board_area add1">
@@ -140,12 +155,22 @@
 						<input type="text" name="address" id="address" onclick="postcode();">
 					</div>
 				</div>
-				<div class="board_area add3" id="content_id">
-					<div class="board_area_1"><strong>내용</strong></div>
-					<div class="board_area_2">
-						<textarea name="content" id="content"></textarea>
+				<!-- 들어온 카테고리에 따라 -->
+				<%if (b.getCategory().equals("1")) {%>
+					<div class="board_area1">
+						<div class="board_area_1"><strong>가격</strong></div>
+						<div class="board_area_2">
+							<input type="number" name="price" id="price" value="<%=b.getPrice()%>">
+						</div>
 					</div>
-				</div>
+					<div class="board_area add3" id="content_id">
+						<div class="board_area_1"><strong>내용</strong></div>
+						<div class="board_area_2">
+							<textarea name="content" id="content"><%=b.getContent() %></textarea>
+						</div>
+					</div>
+				<%}else {%>
+				<%} %>
 				<div class="board_area">
 					<div class="board_area_1"><strong>첨부파일</strong></div>
 					<div class="board_area_2">
@@ -177,17 +202,6 @@
 		category.addEventListener("change", function(){
 			
 			if(this.value == "1"){ /* 중고거래 선택시 */
-				
-				/* 새로운 카테고리 생성 */
-				newSelect.className = "newSelect";
-				newSelect.innerHTML= '<select name="subCategory" id="subCategory">'+
-										'<option value="1">디지털기기</option>'+
-										'<option value="2">스포츠/레저</option>'+
-										'<option value="3">생활/가전</option>'+
-										'<option value="4">티켓/교환권</option>'+
-										'<option value="5">기타</option>'+
-									'</select>';
-				document.querySelector("#board_area_2").appendChild(newSelect);
 				
 				/* 주소 불러오기 */
 				address.value="<%=loginMember.getAddress() %>";
@@ -300,6 +314,18 @@
 		        }
 		    }).open();	
     	}
+		
+		<%if (b!=null && b.getCategory().equals("1")) {%>
+			$(function(){
+				//값 집어넣기
+				$("#category").val('<%=b.getCategory()%>').attr("selected","selected");
+				$("#subCategory").val('<%=b.getSubCategory()%>').attr("selected","selected");
+				$("#title").val('<%=b.getTitle()%>');
+				$("#address").val('<%=b.getAddress()%>');
+			})
+		<%}else {%>
+			console.log("222");
+		<%} %>
 		
 	</script>
 </body>

@@ -8,47 +8,55 @@
 							TITLE,
 							CONTENT,
 							COUNT,
-							CREATE_DATE)
+							CREATE_DATE,
+							CATEGORY)
 					VALUES(SEQ_BNO.NEXTVAL,
 							?,
 							?,
 							?,
 							0,
-							SYSDATE)
+							SYSDATE,
+							?)
 	</entry>
 	
 	<!-- 중고거래 등록 -->
 	<entry key="insertFlea">
 		INSERT INTO FLEAMARKET(BOARD_NO,
-								CATEGORY,
-								PRICE)
+								SUB_CATEGORY,
+								PRICE,
+								CATEGORY)
 					VALUES(SEQ_BNO.CURRVAL,
 							?,
-							?)
+							?,
+							1)
 	</entry>
 	
 	<!-- 동네가게 등록 -->
 	<entry key="insertStores">
 		INSERT INTO STORES(BOARD_NO,
-								CATEGORY,
-								OPEN_TIME,
-								CLOSE_TIME,
-								ADDRESS)
+							SUB_CATEGORY,
+							OPEN_TIME,
+							CLOSE_TIME,
+							ADDRESS,
+							CATEGORY)
 					VALUES(SEQ_BNO.CURRVAL,
 							?,
 							?,
 							?,
-							?)
+							?,
+							2)
 	</entry>
 	
 	<!-- 알바 등록 -->
 	<entry key="insertJobs">
 		INSERT INTO JOBS(BOARD_NO,
-								ADDRESS,
-								JOB_DATE)
+						ADDRESS,
+						JOB_DATE,
+						CATEGORY)
 					VALUES(SEQ_BNO.CURRVAL,
 							?,
-							?)
+							?,
+							3)
 	</entry>
 	
 	<!-- 첨부파일 등록 -->
@@ -69,11 +77,114 @@
 							?)
 	</entry>
 	
+	<!-- 중고거래 총 게시물 수 -->
+	<entry key="fleaTotalCount">
+		SELECT COUNT(*) COUNT
+		FROM FLEAMARKET
+	</entry>
+	
+	<!-- 중고거래 카테고리 검색시 총 게시물 수 -->
+	<entry key="fleaCateTotalCount">
+		SELECT COUNT(*) COUNT
+		FROM FLEAMARKET
+		WHERE SUB_CATEGORY LIKE ?
+	</entry>
+	
 	<!-- 중고거래 리스트 조회 -->
 	<entry key="selectFleaList">
 		SELECT *
-		FROM BOARD
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT BOARD_NO, MEMBER_NO, TITLE, COUNT, B.CATEGORY CATEGORY, PRICE,
+		                        ADDRESS, AT_PATH||AT_CHANGE "TITLEIMG"
+		                FROM BOARD B
+		                JOIN FLEAMARKET USING(BOARD_NO)
+		                JOIN MEMBER USING(MEMBER_NO)
+		                JOIN ATTACHMENT USING(BOARD_NO)
+		                ORDER BY CREATE_DATE DESC)A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<!-- 카테고리 검색 시 중고거래 리스트 조회 -->
+	<entry key="selectCateFleaList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT BOARD_NO, MEMBER_NO, TITLE, COUNT, F.SUB_CATEGORY SUB_CATEGORY, PRICE,
+		                        ADDRESS, AT_PATH||AT_CHANGE "TITLEIMG"
+		                FROM BOARD B
+		                JOIN FLEAMARKET F USING(BOARD_NO)
+		                JOIN MEMBER USING(MEMBER_NO)
+		                JOIN ATTACHMENT USING(BOARD_NO)
+		                WHERE SUB_CATEGORY LIKE ?
+		                ORDER BY CREATE_DATE DESC)A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<!-- 게시글 조회 -->
+	<entry key="boardDetail">
+		SELECT BOARD_NO, MEMBER_NO, MEMBER_ID "WRITER", TITLE, CONTENT, COUNT, B.CATEGORY, PRICE, SUB_CATEGORY,
+				ADDRESS, PROFILE_IMG, AT_PATH||AT_CHANGE "TITLEIMG"
+		FROM BOARD B
+		JOIN MEMBER USING(MEMBER_NO)
 		JOIN FLEAMARKET USING(BOARD_NO)
+		JOIN ATTACHMENT USING(BOARD_NO)
+		WHERE BOARD_NO = ?
+	</entry>
+	
+	<!-- 게시글 삭제 -->
+	<entry key="deleteBoard">
+		DELETE BOARD
+		WHERE BOARD_NO = ?
+	</entry>
+	<!-- 파일 삭제 -->
+	<entry key="deleteAttach">
+		DELETE ATTACHMENT
+		WHERE BOARD_NO = ?
+	</entry>
+	<!-- 플리마켓 삭제 -->
+	<entry key="deleteFlea">
+		DELETE FLEAMARKET
+		WHERE BOARD_NO = ?
+	</entry>
+	
+	<!-- 게시글 수정 -->
+	<entry key="updateBoard">
+		UPDATE BOARD
+		SET TITLE = ?,
+		    CONTENT = ?
+		WHERE BOARD_NO = ?
+	</entry>
+	<!-- 중고거래 수정 -->
+	<entry key="updateFlea">
+		UPDATE FLEAMARKET
+		SET SUB_CATEGORY = ?,
+		    PRICE = ?
+		WHERE BOARD_NO = ?
+	</entry>
+	<!-- 동네가게 수정 -->
+	<entry key="updateStores">
+		UPDATE STORES
+		SET SUB_CATEGORY = ?,
+		    OPEN_TIME = ?,
+		    CLOSE_TIME = ?,
+		    ADDRESS = ?
+		WHERE BOARD_NO = ?
+	</entry>
+	<!-- 알바 수정 -->
+	<entry key="updateJobs">
+		UPDATE JOBS
+		SET ADDRESS = ?,
+		    JOB_DATE = ?
+		WHERE BOARD_NO = ?
+	</entry>
+	<!-- 첨부파일 수정 -->
+	<entry key="updateAttach">
+		UPDATE ATTACHMENT
+		SET AT_NAME = ?,
+		    AT_CHANGE = ?,
+		    AT_PATH = ?,
+		    AT_DATE = SYSDATE,
+		    FILE_LEVEL = ?
+		WHERE BOARD_NO = ?
 	</entry>
 
 </properties>

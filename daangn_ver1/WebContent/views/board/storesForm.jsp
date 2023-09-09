@@ -1,5 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    import = "java.util.ArrayList,
+    		com.danngn.board.board_board.model.vo.Board,
+    		com.danngn.common.vo.PageInfo"%>
+<%
+	/* 게시물 리스트 꺼내기 */
+	ArrayList<Board> list = (ArrayList<Board>)request.getAttribute("list");
+	/* 페이지 */
+	PageInfo pi = (PageInfo)request.getAttribute("pi");
+	/* 카테고리 */
+	int subCate = Integer.parseInt(String.valueOf(request.getAttribute("subCate")));
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -143,6 +154,28 @@
 			font-size: 12px;
 			color: rgb(143, 143, 143);
 		}
+		.page_area{
+			width: 800px;		
+			margin: auto;
+			/* background-color: red; */
+		}
+		.page{
+			padding: 20px;
+			width: 100px;
+			/* background-color:blue; */
+			margin: auto;
+		}
+		.page button{
+			whidth: 15px;
+			height: 30px;
+			border-radius: 2px;
+			border: 0.1em solid rgb(231, 231, 231);	
+        	background-color: white;
+		}
+		.page button:hover{
+        	background-color: rgb(244, 244, 244);
+        	cursor: pointer;
+        }
 	</style>
 </head>
 <body>
@@ -170,112 +203,47 @@
 			<div id="content_cate">
 				<div>
 					<ul>
-						<li><button>전체</button></li>
-						<li><button>식당</button></li>
-						<li><button>카페</button></li>
-						<li><button>뷰티/미용</button></li>
-						<li><button>운동</button></li>
-						<li><button>기타</button></li>
+						<li><button onclick="location.href='<%=contextPath%>/storesListForm.bo?cate=2&currentPage=1&subCategory=0'">전체</button></li>
+						<li><button onclick="location.href='<%=contextPath%>/storesListForm.bo?cate=2&currentPage=1&subCategory=1'">식당</button></li>
+						<li><button onclick="location.href='<%=contextPath%>/storesListForm.bo?cate=2&currentPage=1&subCategory=2'">카페</button></li>
+						<li><button onclick="location.href='<%=contextPath%>/storesListForm.bo?cate=2&currentPage=1&subCategory=3'">뷰티/미용</button></li>
+						<li><button onclick="location.href='<%=contextPath%>/storesListForm.bo?cate=2&currentPage=1&subCategory=4'">운동</button></li>
+						<li><button onclick="location.href='<%=contextPath%>/storesListForm.bo?cate=2&currentPage=1&subCategory=5'">기타</button></li>
 					</ul>
 				</div>
 			</div>
 			<div id="content_el">
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><strong>오떡순</strong><span>신림동</span></div>
-							<div id="flea_price"><span>안녕하세요 신원시장 오떡순 입니다!! 짱 맛있어요@</span></div>
-							<div id="flea_reply">댓글5 - 조회수 20</div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><strong>오떡순</strong><span>신림동</span></div>
-							<div id="flea_price"><span>안녕하세요 신원시장 오떡순 입니다!! 짱 맛있어요@</span></div>
-							<div id="flea_reply">댓글5 - 조회수 20</div>
+				<%for (Board b : list) {%>
+					<div class="box" id="content_el_1" onclick="location.href='<%=contextPath%>/storeDetail.bo?cate=2&boardNo=<%=b.getBoardNo()%>&memNo=<%=b.getMemberNo()%>'">
+						<div id="flea_con">
+							<div id="flea_img">
+								<img src="<%=contextPath + b.getTitleImg()%>">
+							</div>
+							<div id="flea_text">
+								<div id="flea_title"><strong><%=b.getTitle() %></strong></div>
+								<%if(b.getContent().length()>=28) {%>
+									<!-- 내용이 28자 이상일때 문자열 자르기-->
+									<div id="flea_price"><span><%=b.getContent().substring(0, 28) %>...</span></div>
+								<%}else {%>
+									<!-- 내용이 28자 이하일때 전체 출력-->
+									<div id="flea_price"><span><%=b.getContent() %></span></div>
+								<%} %>
+								<div id="flea_reply">댓글5 - 조회수 <%=b.getCount() %></div>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="box" id="content_el_1">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><strong>오떡순</strong><span>신림동</span></div>
-							<div id="flea_price"><span>안녕하세요 신원시장 오떡순 입니다!! 짱 맛있어요@</span></div>
-							<div id="flea_reply">댓글5 - 조회수 20</div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><strong>오떡순</strong><span>신림동</span></div>
-							<div id="flea_price"><span>안녕하세요 신원시장 오떡순 입니다!! 짱 맛있어요@</span></div>
-							<div id="flea_reply">댓글5 - 조회수 20</div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><strong>오떡순</strong><span>신림동</span></div>
-							<div id="flea_price"><span>안녕하세요 신원시장 오떡순 입니다!! 짱 맛있어요@</span></div>
-							<div id="flea_reply">댓글5 - 조회수 20</div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><strong>오떡순</strong><span>신림동</span></div>
-							<div id="flea_price"><span>안녕하세요 신원시장 오떡순 입니다!! 짱 맛있어요@</span></div>
-							<div id="flea_reply">댓글5 - 조회수 20</div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><strong>오떡순</strong><span>신림동</span></div>
-							<div id="flea_price"><span>안녕하세요 신원시장 오떡순 입니다!! 짱 맛있어요@</span></div>
-							<div id="flea_reply">댓글5 - 조회수 20</div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><strong>오떡순</strong><span>신림동</span></div>
-							<div id="flea_price"><span>안녕하세요 신원시장 오떡순 입니다!! 짱 맛있어요@</span></div>
-							<div id="flea_reply">댓글5 - 조회수 20</div>
-						</div>
-					</div>
-				</div>
+				<%} %>
+			</div>
+		</div>
+		<div class="page_area">
+			<div class="page">
+				<%for (int i=pi.getStartPage(); i<=pi.getEndPage(); i++) {%>
+					<%if (i!=pi.getCurrentPage()) {%>
+						<button type="button" onclick="location.href='<%=contextPath%>/storesListForm.bo?cate=2&currentPage=<%=i%>&subCategory=<%=subCate%>'"><%=i %></button>
+					<%}else {%>
+						<button type="button" disabled><%=i %></button>
+					<%} %>
+				<%} %>
 			</div>
 		</div>
 	</div>

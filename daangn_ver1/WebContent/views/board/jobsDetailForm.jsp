@@ -7,11 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<script>
-	//플리마켓 리스트로
-	window.onload = function(){
-		location.href = "/daangn_ver1/fleaListForm.bo?cate=1&currentPage=1&subCategory=0";
-	}
-	</script>
+	<h1>알바 상세페이지</h1>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.danngn.board.board_reply.model.service;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import com.danngn.board.board_board.model.dao.BoardDao;
 import com.danngn.board.board_reply.model.dao.ReplyDao;
 import com.danngn.board.board_reply.model.vo.Reply;
 import com.danngn.common.JDBCTemplate;
@@ -37,6 +38,24 @@ public class ReplyService {
 		JDBCTemplate.close(conn);
 		
 		return rlist;
+	}
+
+	//댓글 삭제
+	public int deleteReply(int replyNo) {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = new ReplyDao().deleteBoard(conn, replyNo);
+				
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
 	}
 
 }

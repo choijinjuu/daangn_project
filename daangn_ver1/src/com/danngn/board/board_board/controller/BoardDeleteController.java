@@ -14,13 +14,13 @@ import com.danngn.board.board_board.model.service.BoardService;
  */
 //게시물 삭제
 @WebServlet("/delete.bo")
-public class DeleteController extends HttpServlet {
+public class BoardDeleteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteController() {
+    public BoardDeleteController() {
         super();
         // TODO Auto-generated constructor stub
     }

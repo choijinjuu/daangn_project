@@ -8,17 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class JobsFormController
+ * Servlet implementation class JobsDetailFormController
  */
-//알바 페이지로
-@WebServlet("/jobsForm.bo")
-public class JobsFormController extends HttpServlet {
+@WebServlet("/JobsDetailFormController")
+public class JobsDetailFormController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public JobsFormController() {
+    public JobsDetailFormController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,10 +26,8 @@ public class JobsFormController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		//요청 주소로 위임
-		request.getRequestDispatcher("views/board/jobsForm.jsp").forward(request, response);
-				
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**

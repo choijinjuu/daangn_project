@@ -73,10 +73,10 @@ public class BoardInsertController extends HttpServlet {
 			String open_h = multiRequest.getParameter("open_h");
 			String open_m = multiRequest.getParameter("open_m");
 			/* 오픈시간, 클로즈시간 처리 */
-			String openTime = open_h+"시"+open_m+"분";
+			String openTime = open_h+"시"+" "+open_m+"분";
 			String close_h = multiRequest.getParameter("close_h");
 			String close_m = multiRequest.getParameter("close_m");
-			String closeTime = close_h+"시"+close_m+"분";
+			String closeTime = close_h+"시"+" "+close_m+"분";
 			String address = multiRequest.getParameter("address");
 			String jobDate = multiRequest.getParameter("jobDate");
 			/* 가격 처리 */

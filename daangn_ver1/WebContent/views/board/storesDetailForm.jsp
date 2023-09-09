@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import = "com.danngn.board.board_board.model.vo.Board,
-			    java.util.ArrayList,
-			    com.danngn.board.board_reply.model.vo.Reply"%>
+			  java.util.ArrayList,
+			  com.danngn.board.board_reply.model.vo.Reply"%>
 <%
 	/* 게시물 꺼내기 */
 	Board b = (Board)request.getAttribute("Board");
@@ -13,9 +13,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<!-- 카카오 지도 API 스크립트 -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=677774bb37d21da09a6855f603a947e5&libraries=services"></script>
+<!-- 677774bb37d21da09a6855f603a947e5 -->
 <title>Insert title here</title>
 	<style>
-		#flea{
+		#store{
             color: rgb(246, 117, 37) !important;
         }
 		#fleaDe_wrap{
@@ -86,16 +89,16 @@
 			width: 680px;
 			margin: auto;
 			font-size: 19px;
-			line-height: 4.5;
+			line-height: 3;
 		}
-		#flea_cate{
+		/* #flea_cate{
 			height: 23px;
 			font-size: 14px;
 			color: rgb(135, 135, 135);
-		}
-		#flea_money{
+		} */
+		/* #flea_money{
 			height: 30px;
-		}
+		} */
 		#flea_all_el2 pre{
 			width: 680px;
 			margin: auto;
@@ -103,6 +106,66 @@
 			font-size: 17px;
 			color: rgb(55, 55, 55);
 			white-space: pre-wrap;
+		}
+		#flea_map_area{
+			/* background-color: blue; */
+			width: 100%;
+			height: 300px;
+		}
+		#map_text_area{
+			width: 100%;
+			height: 30px;
+			/* background-color: red; */
+		}
+		#map_text_area>div{
+			float: left;
+		}
+		#map_text_img{
+			height: 30px;
+			width: 35px;
+		}
+		#map_text_img img{
+			width: 80%;
+			height: 80%;
+			margin-left:5px;
+			margin-top: 3px;
+		}
+		#map_text_area_2{
+			margin-top: 5px;
+			margin-left: 5px;
+		}
+		#map_area{
+			width: 100%;
+			height: 250px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+			background-color: yellow;
+		}
+		
+		
+		
+		
+		#flea_time_area>div{
+			float: left;
+		}
+		#flea_time_area{
+			/* background-color: red; */
+			width: 100%;
+			height: 30px;
+		}
+		#time_img_area{
+			width: 35px;
+			height: 30px;
+			margin-left: 5px;
+		}
+		#time_img_area img{
+			width: 100%;
+			height: 100%;
+		}
+		#time_text{
+			margin-top: 5px;
+			margin-left: 5px;
+			font-size: 15px;
 		}
 		#reply_delete_area{
 			float: right;
@@ -201,45 +264,61 @@
 	</style>
 </head>
 <body>
-	
 	<%@ include file = "../common/header.jsp" %>
 	
 	<div id="fleaDe_wrap">
 		<div class="flea_all" id="fleaDe_img_area">
-			<img src="<%=contextPath + b.getProfileImg()%>">
+			<img src="<%=contextPath + b.getTitleImg()%>">
 		</div>
 		<div class="flea_all" id="fleaDe_title_area">
 			<div id="flea_profile_area"><img src=""></div>
 			<div id="flea_id_area">
-				<div id="flea_id"><a><strong><%=b.getWriter() %></strong></a></div>
-				<div id="flea_address"><%=b.getAddress() %></div>
+				<div id="flea_id"><a><strong><%=b.getTitle() %></strong></a></div>
+				<div id="flea_address"><%=b.getSubCategory() %>  ∙  조회수 <%=b.getCount() %></div>
 			</div>
 			<div id="flea_btn_area">
 				<%if (loginMember!=null && loginMember.getMemberId().equals(b.getWriter())) {%>
 					<!-- 로그인 되어있으며 게시글 작성자일때 -->
-					<button type="button" onclick="location.href='<%=contextPath%>/update.bo?boardNo=<%=b.getBoardNo()%>'">수정</button>
-					<button type="button" onclick="boardDelete();">삭제</button>				
 				<%}else if (loginMember!=null && !loginMember.getMemberId().equals(b.getWriter()) || loginMember == null) {%>
 					<!-- 로그인 되어있지만 게시글 작성자가 아닐때
 						또는 로그인 안되어있을때 -->
-					<button style="visibility: hidden;">수정</button>
-					<button style="visibility: hidden;">삭제</button>
+					<button type="button" onclick="location.href='<%=contextPath%>/update.bo?boardNo=<%=b.getBoardNo()%>'">수정</button>
+					<button type="button" onclick="boardDelete();">삭제</button>				
+					<!-- <button style="visibility: hidden;">수정</button>
+					<button style="visibility: hidden;">삭제</button> -->
 				<%}%>
 			</div>
 		</div>
 		<hr style="border: 0.1px solid rgb(224, 224, 224); width: 680px;">
 		<div class="flea_all" id="fleaDe_text_area">
 			<div>
-				<div id="flea_title"><strong><%=b.getTitle() %></strong></div>
-				<div id="flea_cate"><%=b.getSubCategory()%>  ∙ 조회수 <%=b.getCount() %></div>
-				<div id="flea_money"><strong><%=b.getPrice() %>원</strong></div>
+				<div id="flea_title"><strong>정보</strong></div>
+				<%-- <div id="flea_cate"><%=b.getSubCategory()%>  ∙ 조회수 <%=b.getCount() %></div> --%>
+				<%-- <div id="flea_money"><strong><%=b.getPrice() %>원</strong></div> --%>
 			</div>
 			<div id="flea_all_el2">
 				<pre><%=b.getContent() %></pre>
 			</div>
+			<div id="flea_map_area">
+				<div id="map_text_area">
+					<div id="map_text_img"><img src="resources/css_img/map.png"></div>
+					<div id="map_text_area_2"><span><%=b.getAddress() %></span></div>
+				</div>
+				<div id="map_area">
+					
+				</div>
+			</div>
+			
+			
+			
+			
+			
+			<div id="flea_time_area">
+				<div id="time_img_area"><img src="resources/css_img/time.png"></div>
+				<div id="time_text"><span><%=b.getOpenTime() %> - <%=b.getCloseTime() %></span></div>
+			</div>
 		</div>
 		<hr style="border: 0.1px solid rgb(224, 224, 224); width: 680px;">
-		
 		<%for (Reply r : rlist) {%>
 			<div id='reply_area'>
 				<div id='reply_area_1'>
@@ -321,6 +400,39 @@
 				alert("삭제가 취소되었습니다.");
 			}
 		}
+		
+        //주소에 맞는 지도 띄워주기
+        var mapContainer = document.getElementById('map_area'), // 지도를 표시할 div 
+        
+        mapOption = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };  
+
+	    // 지도 생성
+	    var map = new kakao.maps.Map(mapContainer, mapOption); 
+	
+	    // 주소-좌표 변환 객체 생성
+	    var geocoder = new kakao.maps.services.Geocoder();
+	
+	    // 주소로 좌표를 검색
+	    geocoder.addressSearch('<%=b.getAddress()%>', function(result, status) {
+	
+	        // 정상적으로 검색이 완료됐으면 
+	         if (status === kakao.maps.services.Status.OK) {
+	
+	            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	
+	            // 결과값으로 받은 위치를 마커로 표시
+	            var marker = new kakao.maps.Marker({
+	                map: map,
+	                position: coords
+	            });
+	
+	            // 지도의 중심을 결과값으로 받은 위치로 이동
+	            map.setCenter(coords);
+	        } 
+	    });    
 		
 		//댓글 목록
 		 function selectReview(){
@@ -421,7 +533,5 @@
 		    }
 	      <%}%>
 	</script>
-	
-	
 </body>
 </html>

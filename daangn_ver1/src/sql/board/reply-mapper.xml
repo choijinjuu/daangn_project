@@ -26,4 +26,10 @@
 		ORDER BY CREATE_DATE DESC
 	</entry>
 	
+	<!-- 댓글 삭제 -->
+	<entry key="deleteReply">
+		DELETE REPLY
+		WHERE REPLY_NO = ?
+	</entry>
+	
 </properties>

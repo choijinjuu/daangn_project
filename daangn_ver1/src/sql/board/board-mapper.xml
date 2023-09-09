@@ -77,17 +77,36 @@
 							?)
 	</entry>
 	
-	<!-- 중고거래 총 게시물 수 -->
-	<entry key="fleaTotalCount">
+	<!-- 카테고리별 총 게시물 수 -->
+	<entry key="boardTotalCount">
 		SELECT COUNT(*) COUNT
-		FROM FLEAMARKET
+		FROM BOARD
+		WHERE CATEGORY = ?
 	</entry>
 	
 	<!-- 중고거래 카테고리 검색시 총 게시물 수 -->
-	<entry key="fleaCateTotalCount">
+	<entry key="fleaTotalCount">
 		SELECT COUNT(*) COUNT
-		FROM FLEAMARKET
-		WHERE SUB_CATEGORY LIKE ?
+		FROM BOARD B
+		JOIN FLEAMARKET USING(BOARD_NO)
+		WHERE B.CATEGORY = ?
+		AND SUB_CATEGORY = ?
+	</entry>
+	<!-- 동네가게 카테고리 검색시 총 게시물 수 -->
+	<entry key="storeTotalCount">
+		SELECT COUNT(*) COUNT
+		FROM BOARD B
+		JOIN STORES USING(BOARD_NO)
+		WHERE B.CATEGORY = ?
+		AND SUB_CATEGORY = ?
+	</entry>
+	<!-- 알바 카테고리 검색시 총 게시물 수 -->
+	<!-- 추후 주소 검색으로 쿼리문 수정 다시 해야됨 -->
+	<entry key="jobTotalCount">
+		SELECT COUNT(*) COUNT
+		FROM BOARD B
+		JOIN JOBS USING(BOARD_NO)
+		WHERE B.CATEGORY = ?
 	</entry>
 	
 	<!-- 중고거래 리스트 조회 -->
@@ -95,17 +114,46 @@
 		SELECT *
 		FROM (SELECT ROWNUM RNUM, A.*
 		        FROM (SELECT BOARD_NO, MEMBER_NO, TITLE, COUNT, B.CATEGORY CATEGORY, PRICE,
-		                        ADDRESS, AT_PATH||AT_CHANGE "TITLEIMG"
+		                     ADDRESS, AT_PATH||AT_CHANGE "TITLEIMG"
 		                FROM BOARD B
 		                JOIN FLEAMARKET USING(BOARD_NO)
 		                JOIN MEMBER USING(MEMBER_NO)
 		                JOIN ATTACHMENT USING(BOARD_NO)
+		                WHERE B.CATEGORY = ?
+		                ORDER BY CREATE_DATE DESC)A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	<!-- 동네가게 리스트 조회 -->
+	<entry key="selectStoreList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT BOARD_NO, MEMBER_NO, TITLE, CONTENT, COUNT, B.CATEGORY CATEGORY, SUB_CATEGORY,
+		                     S.ADDRESS, AT_PATH||AT_CHANGE "TITLEIMG"
+		                FROM BOARD B
+		                JOIN STORES S USING(BOARD_NO)
+		                JOIN MEMBER USING(MEMBER_NO)
+		                JOIN ATTACHMENT USING(BOARD_NO)
+		                WHERE B.CATEGORY = ?
+		                ORDER BY CREATE_DATE DESC)A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	<!-- 알바 리스트 조회 -->
+	<entry key="selectJobList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT BOARD_NO, MEMBER_NO, TITLE, B.CATEGORY CATEGORY,
+		                    J.ADDRESS, AT_PATH||AT_CHANGE "TITLEIMG"
+		                FROM BOARD B
+		                JOIN JOBS J USING(BOARD_NO)
+		                JOIN MEMBER USING(MEMBER_NO)
+		                JOIN ATTACHMENT USING(BOARD_NO)
+		                WHERE B.CATEGORY = ?
 		                ORDER BY CREATE_DATE DESC)A)
 		WHERE RNUM BETWEEN ? AND ?
 	</entry>
 	
-	<!-- 카테고리 검색 시 중고거래 리스트 조회 -->
-	<entry key="selectCateFleaList">
+	<!-- 중고거래 중 서브 카테고리 검색시 게시글 리스트 조회 -->
+	<entry key="selectFleaCateList">
 		SELECT *
 		FROM (SELECT ROWNUM RNUM, A.*
 		        FROM (SELECT BOARD_NO, MEMBER_NO, TITLE, COUNT, F.SUB_CATEGORY SUB_CATEGORY, PRICE,
@@ -114,20 +162,77 @@
 		                JOIN FLEAMARKET F USING(BOARD_NO)
 		                JOIN MEMBER USING(MEMBER_NO)
 		                JOIN ATTACHMENT USING(BOARD_NO)
-		                WHERE SUB_CATEGORY LIKE ?
+		                WHERE B.CATEGORY = ?
+		                AND SUB_CATEGORY = ?
+		                ORDER BY CREATE_DATE DESC)A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	<!-- 동네가게 중 서브 카테고리 검색시 게시글 리스트 조회 -->
+	<entry key="selectStoreCateList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT BOARD_NO, MEMBER_NO, TITLE, CONTENT, COUNT, B.CATEGORY CATEGORY, SUB_CATEGORY,
+		                     S.ADDRESS, AT_PATH||AT_CHANGE "TITLEIMG"
+		                FROM BOARD B
+		                JOIN STORES S USING(BOARD_NO)
+		                JOIN MEMBER USING(MEMBER_NO)
+		                JOIN ATTACHMENT USING(BOARD_NO)
+		                WHERE B.CATEGORY = ?
+		                AND SUB_CATEGORY = ?
+		                ORDER BY CREATE_DATE DESC)A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	<!-- 알바 중 서브 주소 검색시 게시글 리스트 조회 -->
+	<!-- 주소로 쿼리문 고쳐야됨 -->
+	<entry key="selectJobCateList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT BOARD_NO, MEMBER_NO, TITLE, COUNT, J.CATEGORY,
+		                        J.ADDRESS, AT_PATH||AT_CHANGE "TITLEIMG"
+		                FROM BOARD B
+		                JOIN JOBS J USING(BOARD_NO)
+		                JOIN MEMBER USING(MEMBER_NO)
+		                JOIN ATTACHMENT USING(BOARD_NO)
+		                WHERE B.CATEGORY = ?
+		                AND J.ADDRESS LIKE '%'||?||'%'
 		                ORDER BY CREATE_DATE DESC)A)
 		WHERE RNUM BETWEEN ? AND ?
 	</entry>
 	
 	<!-- 게시글 조회 -->
-	<entry key="boardDetail">
+	<!-- 중고거래 게시글 조회 -->
+	<entry key="fleaDetail">
 		SELECT BOARD_NO, MEMBER_NO, MEMBER_ID "WRITER", TITLE, CONTENT, COUNT, B.CATEGORY, PRICE, SUB_CATEGORY,
 				ADDRESS, PROFILE_IMG, AT_PATH||AT_CHANGE "TITLEIMG"
 		FROM BOARD B
 		JOIN MEMBER USING(MEMBER_NO)
 		JOIN FLEAMARKET USING(BOARD_NO)
 		JOIN ATTACHMENT USING(BOARD_NO)
-		WHERE BOARD_NO = ?
+		WHERE B.CATEGORY = ?
+		AND BOARD_NO = ?
+	</entry>
+	<!-- 동네가게 게시글 조회 -->
+	<entry key="storeDetail">
+		SELECT BOARD_NO, MEMBER_NO, MEMBER_ID "WRITER", TITLE, CONTENT, COUNT, B.CATEGORY, SUB_CATEGORY,
+		        OPEN_TIME, CLOSE_TIME, S.ADDRESS, AT_PATH||AT_CHANGE "TITLEIMG", PROFILE_IMG
+		FROM BOARD B
+		JOIN MEMBER USING(MEMBER_NO)
+		JOIN STORES S USING(BOARD_NO)
+		JOIN ATTACHMENT USING(BOARD_NO)
+		WHERE B.CATEGORY = ?
+		AND BOARD_NO = ?
+	</entry>
+	<!-- 알바 게시글 조회 -->
+	<!-- 추후 교정 예정 -->
+	<entry key="jobDetail">
+		SELECT BOARD_NO, MEMBER_NO, MEMBER_ID "WRITER", TITLE, CONTENT, COUNT, B.CATEGORY, PRICE, SUB_CATEGORY,
+				ADDRESS, PROFILE_IMG, AT_PATH||AT_CHANGE "TITLEIMG"
+		FROM BOARD B
+		JOIN MEMBER USING(MEMBER_NO)
+		JOIN FLEAMARKET USING(BOARD_NO)
+		JOIN ATTACHMENT USING(BOARD_NO)
+		WHERE B.CATEGORY = ?
+		AND BOARD_NO = ?
 	</entry>
 	
 	<!-- 게시글 삭제 -->

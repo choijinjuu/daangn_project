@@ -14,17 +14,17 @@ import com.danngn.board.board_board.model.vo.Board;
 import com.danngn.common.vo.PageInfo;
 
 /**
- * Servlet implementation class FleaListFormController
+ * Servlet implementation class StoresFormController
  */
-/* 중고거래 리스트 페이지 조회 */
-@WebServlet("/fleaListForm.bo")
-public class FleaListFormController extends HttpServlet {
+//동네가게 리스트 페이지 조회
+@WebServlet("/storesListForm.bo")
+public class StoresListFormController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FleaListFormController() {
+    public StoresListFormController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -49,19 +49,19 @@ public class FleaListFormController extends HttpServlet {
 		
 		int category = Integer.parseInt(request.getParameter("cate"));
 		int subCategory = Integer.parseInt(request.getParameter("subCategory"));
-		
+
 		//게시글 총 수 구하기
-		if(category==1 && subCategory==0) {
-			//전체 중고거래 리스트
+		if(category==2 && subCategory==0) {
+			//전체 동네가게 리트스
 			listCount = new BoardService().totalListCount(category);
 		}else {
-			//카테고리로 검색시
+			//동네가게 카테고리로 검색시
 			listCount = new BoardService().totalListCount(category, subCategory);
 		}
-		
+
 		currentPage = Integer.parseInt(request.getParameter("currentPage").trim());
 		pageLimit = 10;
-		boardLimit = 9;
+		boardLimit = 8;
 			
 		maxPage = (int)Math.ceil((double)listCount/boardLimit);
 		startPage = (currentPage-1)/pageLimit*pageLimit+1;
@@ -75,7 +75,7 @@ public class FleaListFormController extends HttpServlet {
 		
 		//리스트 가져오기
 		if(subCategory==0) {
-			//중고거래 전체 검색시
+			//동네가게 전체 검색시
 			list = new BoardService().selectBoardList(category, pi);
 			
 			request.setAttribute("list", list);
@@ -83,7 +83,7 @@ public class FleaListFormController extends HttpServlet {
 			request.setAttribute("subCate", subCategory);
 
 		}else {
-			//중고거래 카테고리 검색시
+			//동네가게 카테고리 검색시
 			list = new BoardService().selectBoardList(category, subCategory, pi);
 
 			request.setAttribute("list", list);
@@ -92,7 +92,7 @@ public class FleaListFormController extends HttpServlet {
 		}
 		
 		//요청 주소로 위임
-		request.getRequestDispatcher("views/board/fleaForm.jsp").forward(request, response);
+		request.getRequestDispatcher("views/board/storesForm.jsp").forward(request, response);
 	}
 
 	/**

@@ -14,17 +14,17 @@ import com.danngn.board.board_board.model.vo.Board;
 import com.danngn.common.vo.PageInfo;
 
 /**
- * Servlet implementation class FleaListFormController
+ * Servlet implementation class JobsFormController
  */
-/* 중고거래 리스트 페이지 조회 */
-@WebServlet("/fleaListForm.bo")
-public class FleaListFormController extends HttpServlet {
+//알바 페이지로
+@WebServlet("/jobsListForm.bo")
+public class JobsListFormController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FleaListFormController() {
+    public JobsListFormController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,7 +33,7 @@ public class FleaListFormController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		//페이징바 처리
 		int listCount; //현재 총 게시글의 개수
 		int currentPage; //현재 페이지
@@ -49,19 +49,22 @@ public class FleaListFormController extends HttpServlet {
 		
 		int category = Integer.parseInt(request.getParameter("cate"));
 		int subCategory = Integer.parseInt(request.getParameter("subCategory"));
+		System.out.println(category);
+		System.out.println(subCategory);
 		
 		//게시글 총 수 구하기
-		if(category==1 && subCategory==0) {
+		if(category==3 && subCategory==0) {
 			//전체 중고거래 리스트
 			listCount = new BoardService().totalListCount(category);
 		}else {
-			//카테고리로 검색시
+			//주소로 검색시
 			listCount = new BoardService().totalListCount(category, subCategory);
 		}
+		System.out.println(listCount);
 		
 		currentPage = Integer.parseInt(request.getParameter("currentPage").trim());
 		pageLimit = 10;
-		boardLimit = 9;
+		boardLimit = 10;
 			
 		maxPage = (int)Math.ceil((double)listCount/boardLimit);
 		startPage = (currentPage-1)/pageLimit*pageLimit+1;
@@ -90,9 +93,10 @@ public class FleaListFormController extends HttpServlet {
 			request.setAttribute("pi", pi);
 			request.setAttribute("subCate", subCategory);
 		}
-		
+		System.out.println(list);
 		//요청 주소로 위임
-		request.getRequestDispatcher("views/board/fleaForm.jsp").forward(request, response);
+		request.getRequestDispatcher("views/board/jobsForm.jsp").forward(request, response);
+				
 	}
 
 	/**

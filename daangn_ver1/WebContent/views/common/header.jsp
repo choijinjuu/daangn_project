@@ -76,10 +76,6 @@
         #menu a:hover{
             color: rgb(161, 161, 161);
         }
-        /* 메인페이지에서는 중고거래 카테고리 색깔 주황색으로 고정 */
-        #flea{
-            color: rgb(246, 117, 37) !important;
-        }
         #search_text{
             height: 65%;
             width: 80%;
@@ -157,8 +153,8 @@
         </div>
         <div class="menubar_el1" id="menu">
             <div id="flea"><a href="<%=contextPath %>" id="flea">중고거래</a></div>
-            <div id="market"><a href="<%=contextPath %>/storesForm.bo" id="store">동네가게</a></div>
-            <div id="job"><a href="<%=contextPath %>/jobsForm.bo" id="job">알바</a></div>
+            <div id="market"><a href="<%=contextPath %>/storesListForm.bo?cate=2&currentPage=1&subCategory=0" id="store">동네가게</a></div>
+            <div id="job"><a href="<%=contextPath %>/jobsListForm.bo?cate=3&currentPage=1&subCategory=0" id="job">알바</a></div>
         </div>
         <div class="menubar_el1" id="search">
             <div id="search_text"><input type="text" id="text_area" placeholder="&nbsp;물품이나 동네를 검색해보세요!"></div>

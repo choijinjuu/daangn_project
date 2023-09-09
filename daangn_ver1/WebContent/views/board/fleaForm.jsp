@@ -9,7 +9,7 @@
 	/* 페이지 */
 	PageInfo pi = (PageInfo)request.getAttribute("pi");
 	/* 카테고리 */
-	int cate = Integer.parseInt(String.valueOf(request.getAttribute("cate")));
+	int subCate = Integer.parseInt(String.valueOf(request.getAttribute("subCate")));
 %>
 <!DOCTYPE html>
 <html>
@@ -18,6 +18,9 @@
 <title>Insert title here</title>
 
 	<style>
+		#flea{
+            color: rgb(246, 117, 37) !important;
+        }
 		#main_banner{
 			height: 310px;
 			width: 100%;
@@ -189,11 +192,12 @@
 		<div id="main_banner">
 			<img src="resources/css_img/fleamarket_banner_img.png">
 		</div>
-		<form action="<%=contextPath %>/List.bo" method="GET">
+		<form action="<%=contextPath %>/fleaListForm.bo" method="GET">
 			<div id="main_content">
 				<div id="content_title">
 					<div id="content_title_el2">
 						<div id="flea_search">
+							<input type="hidden" name="cate" value="1">
 							<input type="hidden" name="currentPage" value="1">
 							<select name="subCategory" id="subCategory">
 						        <option value="0">키워드 검색</option>
@@ -223,7 +227,7 @@
 				</div>
 				<div id="content_el">
 					<%for (Board b : list) {%>
-						<div class="box" id="content_el_1" onclick="location.href='<%=contextPath%>/fleaDetail.bo?boardNo=<%=b.getBoardNo()%>&memNo=<%=b.getMemberNo()%>'">
+						<div class="box" id="content_el_1" onclick="location.href='<%=contextPath%>/fleaDetail.bo?cate=1&boardNo=<%=b.getBoardNo()%>&memNo=<%=b.getMemberNo()%>'">
 							<div id="flea_con">
 								<div id="flea_img">
 									<img src="<%=contextPath + b.getTitleImg()%>">
@@ -242,22 +246,12 @@
 		</form>
 		<div class="page_area">
 			<div class="page">
-				<!-- 이전 버튼 -->
-				<%if (pi.getCurrentPage()!=1) {%>
-					<button type="button" onclick="location.href='<%=contextPath%>/List.bo?currentPage=<%=pi.getCurrentPage()-1%>&subCategory=<%=cate%>'">&lt;&lt;</button>
-				<%} %>
-				
 				<%for (int i=pi.getStartPage(); i<=pi.getEndPage(); i++) {%>
 					<%if (i!=pi.getCurrentPage()) {%>
-						<button type="button" onclick="location.href='<%=contextPath%>/List.bo?currentPage=<%=i%>&subCategory=<%=cate%>'"><%=i %></button>
+						<button type="button" onclick="location.href='<%=contextPath%>/fleaListForm.bo?cate=1&currentPage=<%=i%>&subCategory=<%=subCate%>'"><%=i %></button>
 					<%}else {%>
 						<button type="button" disabled><%=i %></button>
 					<%} %>
-				<%} %>
-				
-				<!-- 다음 버튼 -->
-				<%if(pi.getCurrentPage()!=pi.getMaxPage()) {%>
-					<button type="button" onclick="location.href='<%=contextPath%>/List.bo?currentPage=<%=pi.getCurrentPage()+1%>&subCategory=<%=cate%>'">&gt;&gt;</button>
 				<%} %>
 			</div>
 		</div>

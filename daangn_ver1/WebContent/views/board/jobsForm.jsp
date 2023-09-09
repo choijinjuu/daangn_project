@@ -1,5 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+	import = "java.util.ArrayList,
+    		com.danngn.board.board_board.model.vo.Board,
+    		com.danngn.common.vo.PageInfo"%>
+<%
+	/* 게시물 리스트 꺼내기 */
+	ArrayList<Board> list = (ArrayList<Board>)request.getAttribute("list");
+	/* 페이지 */
+	PageInfo pi = (PageInfo)request.getAttribute("pi");
+	/* 카테고리 */
+	int subCate = Integer.parseInt(String.valueOf(request.getAttribute("subCate")));
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +18,9 @@
 <title>Insert title here</title>
 
 	<style>
+		#job{
+            color: rgb(246, 117, 37) !important;
+        }
 		#main_banner{
 			height: 310px;
 			width: 100%;
@@ -28,7 +42,7 @@
 		}
 		#content_title_el1{
 			height: 100%;
-			width: 30%;
+			width: 43%;
 		}
 		#content_title_el1 span{
 			font-weight: 600;
@@ -43,7 +57,7 @@
 		}
 		#content_title_el3{
 			height: 100%;
-			width: 30%;
+			width: 17%;
 		}
 		#flea_search{
 			height: 20px;
@@ -69,9 +83,8 @@
 		}
 		#content_btn_area{
 			width: 70px;
-			height: 30px;
-			margin-top: 70px;
-			margin-left: 130px;
+			height: 28px;
+			margin-top: 75px;
 		}
 		#content_btn_area button{
 			width: 100%;
@@ -147,7 +160,30 @@
 		#flea_reply{
 			margin-top: -25px;
 			font-size: 15px;
+			color: rgb(129, 129, 129);
 		}
+		.page_area{
+			width: 800px;		
+			margin: auto;
+			/* background-color: red; */
+		}
+		.page{
+			padding: 20px;
+			width: 100px;
+			/* background-color:blue; */
+			margin: auto;
+		}
+		.page button{
+			whidth: 15px;
+			height: 30px;
+			border-radius: 2px;
+			border: 0.1em solid rgb(231, 231, 231);	
+        	background-color: white;
+		}
+		.page button:hover{
+        	background-color: rgb(244, 244, 244);
+        	cursor: pointer;
+        }
 	</style>
 
 </head>
@@ -159,149 +195,56 @@
 			<img src="resources/css_img/jobs_banner_img.png">
 		</div>
 		<div id="main_content">
-			<div id="content_title">
-				<div id="content_title_el1"><span>인기 당근알바</span></div>
-				<div id="content_title_el2">
-					<div id="flea_search">
-						<input type="text" placeholder="주소로 검색">
+			<form>
+				<div id="content_title">
+					<div id="content_title_el1"><span>인기 당근알바</span></div>
+					<div id="content_title_el2">
+						<div id="flea_search">
+							<input type="text" name="subCategory" id="subCategory" placeholder="주소로 검색">
+						</div>
+						<div class="btn_el" id="flea_btn">
+							<button><img src="resources/css_img/search_img.png" style="width: 70%; height: 70%"></button>
+						</div>
 					</div>
-					<div class="btn_el" id="flea_btn">
-						<button><img src="resources/css_img/search_img.png" style="width: 70%; height: 70%"></button>
+					<div id="content_title_el3">
+						<div id="content_btn_area">
+							<%if (loginMember == null) {%>
+								<!-- 로그인이 안되어있으면 알림창으로 띄워주기 -->
+								<button onclick="alert('로그인이 필요합니다.')">글쓰기</button>
+							<%} else{%>
+								<!-- 로그인 완료시 글작성 페이지로 -->
+								<button onclick="location.href='<%=contextPath%>/insert.bo'">글쓰기</button>
+							<%} %>
+						</div>
 					</div>
 				</div>
-				<div id="content_title_el3">
-					<div id="content_btn_area">
-						<%if (loginMember == null) {%>
-							<!-- 로그인이 안되어있으면 알림창으로 띄워주기 -->
-							<button onclick="alert('로그인이 필요합니다.')">글쓰기</button>
-						<%} else{%>
-							<!-- 로그인 완료시 글작성 페이지로 -->
-							<button onclick="location.href='<%=contextPath%>/insert.bo'">글쓰기</button>
-						<%} %>
-					</div>
-				</div>
-			</div>
+			</form>
 			<div id="content_el">
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><span>인천 하객알바 구합니다.</span></div>
-							<div id="flea_price"><span>인천광역시 부평구 부평동</span></div>
-							<div id="flea_reply"><strong>건당 16,000</strong></div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><span>인천 하객알바 구합니다.</span></div>
-							<div id="flea_price"><span>인천광역시 부평구 부평동</span></div>
-							<div id="flea_reply"><strong>건당 16,000</strong></div>
+				<%for (Board b : list) {%>
+					<div class="box" id="content_el_1" onclick="fleaGo()">
+						<div id="flea_con">
+							<div id="flea_img">
+								<img src="<%=contextPath + b.getTitleImg()%>">
+							</div>
+							<div id="flea_text">
+								<div id="flea_title"><span><strong><%=b.getTitle() %></strong></span></div>
+								<div id="flea_price"><span><%=b.getAddress() %></span></div>
+								<div id="flea_reply">댓글5 - 조회수 <%=b.getCount() %></div>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><span>인천 하객알바 구합니다.</span></div>
-							<div id="flea_price"><span>인천광역시 부평구 부평동</span></div>
-							<div id="flea_reply"><strong>건당 16,000</strong></div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><span>인천 하객알바 구합니다.</span></div>
-							<div id="flea_price"><span>인천광역시 부평구 부평동</span></div>
-							<div id="flea_reply"><strong>건당 16,000</strong></div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><span>인천 하객알바 구합니다.</span></div>
-							<div id="flea_price"><span>인천광역시 부평구 부평동</span></div>
-							<div id="flea_reply"><strong>건당 16,000</strong></div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><span>인천 하객알바 구합니다.</span></div>
-							<div id="flea_price"><span>인천광역시 부평구 부평동</span></div>
-							<div id="flea_reply"><strong>건당 16,000</strong></div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><span>인천 하객알바 구합니다.</span></div>
-							<div id="flea_price"><span>인천광역시 부평구 부평동</span></div>
-							<div id="flea_reply"><strong>건당 16,000</strong></div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><span>인천 하객알바 구합니다.</span></div>
-							<div id="flea_price"><span>인천광역시 부평구 부평동</span></div>
-							<div id="flea_reply"><strong>건당 16,000</strong></div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><span>인천 하객알바 구합니다.</span></div>
-							<div id="flea_price"><span>인천광역시 부평구 부평동</span></div>
-							<div id="flea_reply"><strong>건당 16,000</strong></div>
-						</div>
-					</div>
-				</div>
-				<div class="box" id="content_el_1" onclick="fleaGo()">
-					<div id="flea_con">
-						<div id="flea_img">
-							<img src="">
-						</div>
-						<div id="flea_text">
-							<div id="flea_title"><span>인천 하객알바 구합니다.</span></div>
-							<div id="flea_price"><span>인천광역시 부평구 부평동</span></div>
-							<div id="flea_reply"><strong>건당 16,000</strong></div>
-						</div>
-					</div>
-				</div>
+				<%} %>
+			</div>
+		</div>
+		<div class="page_area">
+			<div class="page">
+				<%for (int i=pi.getStartPage(); i<=pi.getEndPage(); i++) {%>
+					<%if (i!=pi.getCurrentPage()) {%>
+						<button type="button" onclick="location.href='<%=contextPath%>/fleaListForm.bo?cate=1&currentPage=<%=i%>&subCategory=<%=subCate%>'"><%=i %></button>
+					<%}else {%>
+						<button type="button" disabled><%=i %></button>
+					<%} %>
+				<%} %>
 			</div>
 		</div>
 	</div>

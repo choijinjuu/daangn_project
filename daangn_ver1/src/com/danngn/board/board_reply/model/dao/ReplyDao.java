@@ -90,4 +90,28 @@ public class ReplyDao {
 		return rlist;
 	}
 
+	//댓글 삭제
+	public int deleteBoard(Connection conn, int replyNo) {
+		
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		//게시글 삭제
+		String sql = prop.getProperty("deleteReply");
+		
+		//게시글 삭제
+		try {
+			pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, replyNo);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
 }

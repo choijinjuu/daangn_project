@@ -35,47 +35,71 @@ public class BoardService {
 	}
 
 	//중고거래 총 게시물 수
-	public int totalFleaListCount() {
+//	public int totalFleaListCount() {
+//		
+//		Connection conn = JDBCTemplate.getConnection();
+//		
+//		int totalFleaListCount = new BoardDao().totalFleaListCount(conn);
+//		
+//		JDBCTemplate.close(conn);
+//		
+//		return totalFleaListCount;
+//	}
+	
+	//게시글 총 게시물 수
+	public int totalListCount(int category) {
 		
 		Connection conn = JDBCTemplate.getConnection();
 		
-		int totalFleaListCount = new BoardDao().totalFleaListCount(conn);
+		int totalListCount = new BoardDao().totalListCount(conn, category);
 		
 		JDBCTemplate.close(conn);
 		
-		return totalFleaListCount;
+		return totalListCount;
 	}
 	
-	//중고거래 카테고리 검색시 총 게시물 수
-	public int totalFleaListCount(int subCategory) {
+	//카테고리 검색시 총 게시물 수
+	public int totalListCount(int category, int subCategory) {
 		
 		Connection conn = JDBCTemplate.getConnection();
 		
-		int totalFleaListCount = new BoardDao().totalFleaListCount(conn, subCategory);
+		int totalListCount = new BoardDao().totalListCount(conn, category, subCategory);
 		
 		JDBCTemplate.close(conn);
 		
-		return totalFleaListCount;
+		return totalListCount;
 	}
 
 	//중고거래 리스트
-	public ArrayList<Board> selectFleatList(PageInfo pi) {
-		
+//	public ArrayList<Board> selectFleatList(PageInfo pi) {
+//		
+//		Connection conn = JDBCTemplate.getConnection();
+//		
+//		ArrayList<Board> list = new BoardDao().selectFleatList(conn, pi);
+//		
+//		JDBCTemplate.close(conn);
+//		
+//		return list;
+//	}
+
+	//카테고리 총 게시글 리스트
+	public ArrayList<Board> selectBoardList(int category, PageInfo pi) {
+			
 		Connection conn = JDBCTemplate.getConnection();
 		
-		ArrayList<Board> list = new BoardDao().selectFleatList(conn, pi);
+		ArrayList<Board> list = new BoardDao().selectBoardList(conn, category, pi);
 		
 		JDBCTemplate.close(conn);
 		
 		return list;
 	}
+	
+	//카테고리 검색시 총 게시글 리스트
+	public ArrayList<Board> selectBoardList(int category, int subCategory, PageInfo pi) {
 
-	//중고거래 카테고리 검색시 리스트
-	public ArrayList<Board> selectFleatList(int subCategory, PageInfo pi) {
-			
 		Connection conn = JDBCTemplate.getConnection();
 		
-		ArrayList<Board> list = new BoardDao().selectFleatList(conn, subCategory, pi);
+		ArrayList<Board> list = new BoardDao().selectBoardList(conn, category, subCategory, pi);
 		
 		JDBCTemplate.close(conn);
 		
@@ -83,11 +107,11 @@ public class BoardService {
 	}
 
 	//중고거래 상세보기
-	public Board fleaDetail(int boardNo) {
+	public Board BoardDetail(int cate, int boardNo) {
 
 		Connection conn = JDBCTemplate.getConnection();
 		
-		Board b = new BoardDao().BoardDetail(conn, boardNo);
+		Board b = new BoardDao().BoardDetail(conn, cate, boardNo);
 		
 		JDBCTemplate.close(conn);
 		
@@ -134,13 +158,4 @@ public class BoardService {
 		
 		return result*result2;
 	}
-
-	
-
-
-
-	
-
-	
-
 }

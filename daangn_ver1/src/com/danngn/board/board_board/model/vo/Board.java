@@ -65,7 +65,7 @@ public class Board {
 		this.address = address;
 		this.jobDate = jobDate;
 	}
-	//중고거래 리스트 생성자 추후 모든 카테고리로 하나 만들어야될듯..*****************
+	//중고거래 리스트 생성자
 	public Board(int boardNo, int memberNo, String title, int count, String category, int price, String address,
 			String titleImg) {
 		super();
@@ -78,7 +78,31 @@ public class Board {
 		this.address = address;
 		this.titleImg = titleImg;
 	}
-	//중고거래 디테일 게시글 생성자 추후 모든 카테괴 하나로 만들어야ㄷ될듯@@@************
+	//동네마켓 리스트 생성자
+	public Board(int boardNo, int memberNo, String title, String content, int count, String category,
+			String subCategory, String address, String titleImg) {
+		super();
+		this.boardNo = boardNo;
+		this.memberNo = memberNo;
+		this.title = title;
+		this.content = content;
+		this.count = count;
+		this.category = category;
+		this.subCategory = subCategory;
+		this.address = address;
+		this.titleImg = titleImg;
+	}
+	//알바 리스트 생성자
+	public Board(int boardNo, int memberNo, String title, String category, String address, String titleImg) {
+		super();
+		this.boardNo = boardNo;
+		this.memberNo = memberNo;
+		this.title = title;
+		this.category = category;
+		this.address = address;
+		this.titleImg = titleImg;
+	}
+	//중고거래 디테일 게시글 생성자
 	public Board(int boardNo, int memberNo, String writer, String title, String content, int count, String category, int price,
 			String subCategory, String address, String titleImg, String profileImg) {
 		super();
@@ -91,6 +115,24 @@ public class Board {
 		this.category = category;
 		this.price = price;
 		this.subCategory = subCategory;
+		this.address = address;
+		this.titleImg = titleImg;
+		this.profileImg = profileImg;
+	}
+	//동네가게 디테일 게시글 생성자
+	public Board(int boardNo, int memberNo, String writer, String title, String content, int count, String category,
+			String subCategory, String openTime, String closeTime, String address, String titleImg, String profileImg) {
+		super();
+		this.boardNo = boardNo;
+		this.memberNo = memberNo;
+		this.writer = writer;
+		this.title = title;
+		this.content = content;
+		this.count = count;
+		this.category = category;
+		this.subCategory = subCategory;
+		this.openTime = openTime;
+		this.closeTime = closeTime;
 		this.address = address;
 		this.titleImg = titleImg;
 		this.profileImg = profileImg;

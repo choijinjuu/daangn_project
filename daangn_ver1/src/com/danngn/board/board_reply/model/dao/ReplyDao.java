@@ -78,7 +78,8 @@ public class ReplyDao {
 									rset.getInt("MEMBER_NO"),
 									rset.getString("CONTENT"),
 									rset.getString("CREATE_DATE"),
-									rset.getInt("SECRET")));
+									rset.getInt("SECRET"),
+									rset.getString("PROFILE_IMG")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

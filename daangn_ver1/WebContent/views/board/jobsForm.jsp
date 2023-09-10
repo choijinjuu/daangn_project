@@ -130,7 +130,7 @@
 			cursor: pointer;
 		}
 		#flea_con>div{
-			float: left;
+			float: left !important;
 		}
 		#flea_img{
 			border-radius: 10px;
@@ -162,15 +162,19 @@
 			font-size: 15px;
 			color: rgb(129, 129, 129);
 		}
+		#list_empty{
+			margin-left: 250px;
+			width: 200px;
+			font-size: 18px;
+			color: rgb(129, 129, 129);
+		}
 		.page_area{
 			width: 800px;		
 			margin: auto;
-			/* background-color: red; */
 		}
 		.page{
 			padding: 20px;
 			width: 100px;
-			/* background-color:blue; */
 			margin: auto;
 		}
 		.page button{
@@ -195,12 +199,15 @@
 			<img src="resources/css_img/jobs_banner_img.png">
 		</div>
 		<div id="main_content">
-			<form>
+			<form action="<%=contextPath %>/jobsListForm.bo" method="GET">
 				<div id="content_title">
 					<div id="content_title_el1"><span>인기 당근알바</span></div>
 					<div id="content_title_el2">
 						<div id="flea_search">
-							<input type="text" name="subCategory" id="subCategory" placeholder="주소로 검색">
+							<input type="hidden" name="cate" value="3">
+							<input type="hidden" name="currentPage" value="1">
+							<input type="hidden" name="subCategory" value="1">
+							<input type="text" name="search" id="search" placeholder="주소로 검색">
 						</div>
 						<div class="btn_el" id="flea_btn">
 							<button><img src="resources/css_img/search_img.png" style="width: 70%; height: 70%"></button>
@@ -221,17 +228,28 @@
 			</form>
 			<div id="content_el">
 				<%for (Board b : list) {%>
-					<div class="box" id="content_el_1" onclick="fleaGo()">
+					<div class="box" id="content_el_1" onclick="location.href='<%=contextPath%>/boardDetail.bo?cate=3&boardNo=<%=b.getBoardNo()%>&memNo=<%=b.getMemberNo()%>'">
 						<div id="flea_con">
 							<div id="flea_img">
 								<img src="<%=contextPath + b.getTitleImg()%>">
 							</div>
 							<div id="flea_text">
-								<div id="flea_title"><span><strong><%=b.getTitle() %></strong></span></div>
+								<%if (b.getTitle().length()>=10){%>
+									<!-- 제목이 10자 이상이면 문자열 자르기 -->
+									<div id="flea_title"><span><strong><%=b.getTitle().substring(0, 10) %>...</strong></span></div>
+								<%}else {%>
+									<!-- 제목이 10자 이하면 전체 출력 -->
+									<div id="flea_title"><span><strong><%=b.getTitle() %></strong></span></div>
+								<%} %>
 								<div id="flea_price"><span><%=b.getAddress() %></span></div>
 								<div id="flea_reply">댓글5 - 조회수 <%=b.getCount() %></div>
 							</div>
 						</div>
+					</div>
+				<%} %>
+				<%if (list.isEmpty()) {%>
+					<div id="list_empty">
+						<span>검색 결과가 없습니다.</span>
 					</div>
 				<%} %>
 			</div>
@@ -240,7 +258,7 @@
 			<div class="page">
 				<%for (int i=pi.getStartPage(); i<=pi.getEndPage(); i++) {%>
 					<%if (i!=pi.getCurrentPage()) {%>
-						<button type="button" onclick="location.href='<%=contextPath%>/fleaListForm.bo?cate=1&currentPage=<%=i%>&subCategory=<%=subCate%>'"><%=i %></button>
+						<button type="button" onclick="location.href='<%=contextPath%>/jobsListForm.bo?cate=3&currentPage=<%=i%>&subCategory=<%=subCate%>'"><%=i %></button>
 					<%}else {%>
 						<button type="button" disabled><%=i %></button>
 					<%} %>

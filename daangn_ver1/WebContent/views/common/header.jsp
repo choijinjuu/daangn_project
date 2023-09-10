@@ -168,7 +168,7 @@
 	            <a href="<%=contextPath%>/insert.me">회원가입</a>
        		<!-- 로그인 멤버 있으면 -->
         	<%}else {%>
-        		<a href="<%=contextPath%>/mypageForm.me">마이페이지</a>
+        		<a href="<%=contextPath%>/updateMy.me">마이페이지</a>
 	            <span>/</span>
 	            <a href="<%=contextPath%>/logout.me">로그아웃</a>
         	<%} %>

@@ -15,7 +15,6 @@
 <meta charset="UTF-8">
 <!-- 카카오 지도 API 스크립트 -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=677774bb37d21da09a6855f603a947e5&libraries=services"></script>
-<!-- 677774bb37d21da09a6855f603a947e5 -->
 <title>Insert title here</title>
 	<style>
 		#store{
@@ -47,11 +46,10 @@
 		#flea_profile_area{
 			height: 50px;
 			width: 8%;
-			background-color: blue;
 			margin-top: 15px;
 			border-radius: 100px;
 		}
-		#flea_profile img{
+		#flea_profile_area img{
 			width: 100%;
 			height: 100%;
 			border-radius: 100px;
@@ -91,14 +89,6 @@
 			font-size: 19px;
 			line-height: 3;
 		}
-		/* #flea_cate{
-			height: 23px;
-			font-size: 14px;
-			color: rgb(135, 135, 135);
-		} */
-		/* #flea_money{
-			height: 30px;
-		} */
 		#flea_all_el2 pre{
 			width: 680px;
 			margin: auto;
@@ -108,14 +98,12 @@
 			white-space: pre-wrap;
 		}
 		#flea_map_area{
-			/* background-color: blue; */
 			width: 100%;
 			height: 300px;
 		}
 		#map_text_area{
 			width: 100%;
 			height: 30px;
-			/* background-color: red; */
 		}
 		#map_text_area>div{
 			float: left;
@@ -141,15 +129,10 @@
 			margin-bottom: 10px;
 			background-color: yellow;
 		}
-		
-		
-		
-		
 		#flea_time_area>div{
 			float: left;
 		}
 		#flea_time_area{
-			/* background-color: red; */
 			width: 100%;
 			height: 30px;
 		}
@@ -215,9 +198,9 @@
 		#witer_img{
 			width: 40px;
 			height: 35px;
-			border-radius: 50px;
 		}
 		#witer_img img{
+			border-radius: 50px;
 			width: 100%;
 			height: 100%;
 		}
@@ -271,7 +254,7 @@
 			<img src="<%=contextPath + b.getTitleImg()%>">
 		</div>
 		<div class="flea_all" id="fleaDe_title_area">
-			<div id="flea_profile_area"><img src=""></div>
+			<div id="flea_profile_area"><img src="<%=b.getProfileImg()%>"></div>
 			<div id="flea_id_area">
 				<div id="flea_id"><a><strong><%=b.getTitle() %></strong></a></div>
 				<div id="flea_address"><%=b.getSubCategory() %>  ∙  조회수 <%=b.getCount() %></div>
@@ -279,13 +262,13 @@
 			<div id="flea_btn_area">
 				<%if (loginMember!=null && loginMember.getMemberId().equals(b.getWriter())) {%>
 					<!-- 로그인 되어있으며 게시글 작성자일때 -->
+					<button type="button" onclick="location.href='<%=contextPath%>/update.bo?boardNo=<%=b.getBoardNo()%>'">수정</button>
+					<button type="button" onclick="boardDelete();">삭제</button>				
 				<%}else if (loginMember!=null && !loginMember.getMemberId().equals(b.getWriter()) || loginMember == null) {%>
 					<!-- 로그인 되어있지만 게시글 작성자가 아닐때
 						또는 로그인 안되어있을때 -->
-					<button type="button" onclick="location.href='<%=contextPath%>/update.bo?boardNo=<%=b.getBoardNo()%>'">수정</button>
-					<button type="button" onclick="boardDelete();">삭제</button>				
-					<!-- <button style="visibility: hidden;">수정</button>
-					<button style="visibility: hidden;">삭제</button> -->
+					<button style="visibility: hidden;">수정</button>
+					<button style="visibility: hidden;">삭제</button>
 				<%}%>
 			</div>
 		</div>
@@ -293,8 +276,6 @@
 		<div class="flea_all" id="fleaDe_text_area">
 			<div>
 				<div id="flea_title"><strong>정보</strong></div>
-				<%-- <div id="flea_cate"><%=b.getSubCategory()%>  ∙ 조회수 <%=b.getCount() %></div> --%>
-				<%-- <div id="flea_money"><strong><%=b.getPrice() %>원</strong></div> --%>
 			</div>
 			<div id="flea_all_el2">
 				<pre><%=b.getContent() %></pre>
@@ -304,15 +285,8 @@
 					<div id="map_text_img"><img src="resources/css_img/map.png"></div>
 					<div id="map_text_area_2"><span><%=b.getAddress() %></span></div>
 				</div>
-				<div id="map_area">
-					
-				</div>
+				<div id="map_area"></div>
 			</div>
-			
-			
-			
-			
-			
 			<div id="flea_time_area">
 				<div id="time_img_area"><img src="resources/css_img/time.png"></div>
 				<div id="time_text"><span><%=b.getOpenTime() %> - <%=b.getCloseTime() %></span></div>
@@ -325,7 +299,7 @@
 					<input type='hidden' value="<%=r.getReplyNo()%>">
 					<div class='writer_profile'>
 						<div id='witer_img'>
-							<img src=''>
+							<img src='<%=r.getProfileImg()%>'>
 						</div>
 						<div>
 							<button><span><strong><%=r.getMemberNo() %></strong></span></button>
@@ -363,7 +337,7 @@
 				<%if (loginMember!=null) {%>
 					<div class="writer_profile">
 						<div id="witer_img">
-							<img src="">
+							<img src="<%=loginMember.getProfile_img()%>">
 						</div>
 						<div><button><span><strong><%=loginMember.getMemberId() %></strong></span></button></div>
 					</div>				
@@ -379,8 +353,14 @@
 					<textarea name="replyContent" id="replyContent" placeholder="우리모두 훈훈해지는 댓글을 남겨주세요!"></textarea>
 				</div>
 				<div id="writer_btn">
-					<button type="button" onclick="insertReply()">글쓰기</button>
-					<button id="reply_secret" onclick="insertReply2()">비밀댓글</button>
+					<%if (loginMember==null) {%>
+						<!-- 로그인하지 않은 회원은 댓글버튼 1개만 보여주기 -->
+						<button type="button" onclick="insertReply()">글쓰기</button>
+					<%}else if(loginMember!=null) {%>
+						<!-- 로그인한 회원은 버튼 두개 다 보여주기 -->
+						<button type="button" onclick="insertReply()">글쓰기</button>
+						<button id="reply_secret" onclick="insertReply2()">비밀댓글</button>
+					<%} %>
 				</div>
 			</div>
 		</div>

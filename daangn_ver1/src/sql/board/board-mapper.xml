@@ -101,12 +101,12 @@
 		AND SUB_CATEGORY = ?
 	</entry>
 	<!-- 알바 카테고리 검색시 총 게시물 수 -->
-	<!-- 추후 주소 검색으로 쿼리문 수정 다시 해야됨 -->
 	<entry key="jobTotalCount">
 		SELECT COUNT(*) COUNT
 		FROM BOARD B
-		JOIN JOBS USING(BOARD_NO)
+		JOIN JOBS J USING(BOARD_NO)
 		WHERE B.CATEGORY = ?
+		AND J.ADDRESS LIKE '%'||?||'%'
 	</entry>
 	
 	<!-- 중고거래 리스트 조회 -->
@@ -183,7 +183,6 @@
 		WHERE RNUM BETWEEN ? AND ?
 	</entry>
 	<!-- 알바 중 서브 주소 검색시 게시글 리스트 조회 -->
-	<!-- 주소로 쿼리문 고쳐야됨 -->
 	<entry key="selectJobCateList">
 		SELECT *
 		FROM (SELECT ROWNUM RNUM, A.*
@@ -223,13 +222,12 @@
 		AND BOARD_NO = ?
 	</entry>
 	<!-- 알바 게시글 조회 -->
-	<!-- 추후 교정 예정 -->
 	<entry key="jobDetail">
-		SELECT BOARD_NO, MEMBER_NO, MEMBER_ID "WRITER", TITLE, CONTENT, COUNT, B.CATEGORY, PRICE, SUB_CATEGORY,
-				ADDRESS, PROFILE_IMG, AT_PATH||AT_CHANGE "TITLEIMG"
+		SELECT BOARD_NO, MEMBER_NO, MEMBER_ID "WRITER", TITLE, CONTENT, B.CATEGORY,
+		        J.ADDRESS, TO_CHAR(JOB_DATE, 'YYYY"년" MM"월" DD"일"' ) "JOB_DATE", PROFILE_IMG, AT_PATH||AT_CHANGE "TITLEIMG"
 		FROM BOARD B
 		JOIN MEMBER USING(MEMBER_NO)
-		JOIN FLEAMARKET USING(BOARD_NO)
+		JOIN JOBS J USING(BOARD_NO)
 		JOIN ATTACHMENT USING(BOARD_NO)
 		WHERE B.CATEGORY = ?
 		AND BOARD_NO = ?

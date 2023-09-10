@@ -137,6 +137,31 @@ public class Board {
 		this.titleImg = titleImg;
 		this.profileImg = profileImg;
 	}
+	//알바 디테일 게시글 생성자
+	public Board(int boardNo, int memberNo, String writer, String title, String content, String category,
+			String address, String jobDate, String titleImg, String profileImg) {
+		super();
+		this.boardNo = boardNo;
+		this.memberNo = memberNo;
+		this.writer = writer;
+		this.title = title;
+		this.content = content;
+		this.category = category;
+		this.address = address;
+		this.jobDate = jobDate;
+		this.titleImg = titleImg;
+		this.profileImg = profileImg;
+	}
+	//회원 게시글 조회시 생성자
+	public Board(int boardNo, int memberNo, String title, int count, String category, String titleImg) {
+		super();
+		this.boardNo = boardNo;
+		this.memberNo = memberNo;
+		this.title = title;
+		this.count = count;
+		this.category = category;
+		this.titleImg = titleImg;
+	}
 	public Board(int boardNo, int memberNo, String writer, String title, String content, int count, String createDate,
 			String category, int price, String subCategory, String openTime, String closeTime,
 			String address, String jobDate, String titleImg, String profileImg) {

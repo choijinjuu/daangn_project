@@ -16,10 +16,39 @@ public class Reply {
 	private String createDate;
 	private int secret;
 	
+	private String title;
+	private String category;
+	private String titleImg;
+	private String profileImg;
+	
 	public Reply() {
 		super();
 	}
-	public Reply(int replyNo, int boardNo, int memberNo, String content, String createDate, int secret) {
+	//회원이 쓴 리플 리스트 생성자
+		public Reply(int replyNo, int boardNo, int memberNo, String content, String title, String category,
+				String titleImg) {
+			super();
+			this.replyNo = replyNo;
+			this.boardNo = boardNo;
+			this.memberNo = memberNo;
+			this.content = content;
+			this.title = title;
+			this.category = category;
+			this.titleImg = titleImg;
+		}
+		//게시판 중 댓글 목록 생성자
+		public Reply(int replyNo, int boardNo, int memberNo, String content, String createDate, int secret, String profileImg) {
+			super();
+			this.replyNo = replyNo;
+			this.boardNo = boardNo;
+			this.memberNo = memberNo;
+			this.content = content;
+			this.createDate = createDate;
+			this.secret = secret;
+			this.profileImg = profileImg;
+		}
+	public Reply(int replyNo, int boardNo, int memberNo, String content, String createDate, int secret, String title,
+			String category, String titleImg, String profileImg) {
 		super();
 		this.replyNo = replyNo;
 		this.boardNo = boardNo;
@@ -27,6 +56,10 @@ public class Reply {
 		this.content = content;
 		this.createDate = createDate;
 		this.secret = secret;
+		this.title = title;
+		this.category = category;
+		this.titleImg = titleImg;
+		this.profileImg = profileImg;
 	}
 	
 	public int getReplyNo() {
@@ -65,10 +98,35 @@ public class Reply {
 	public void setSecret(int secret) {
 		this.secret = secret;
 	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getTitleImg() {
+		return titleImg;
+	}
+	public void setTitleImg(String titleImg) {
+		this.titleImg = titleImg;
+	}
+	public String getProfileImg() {
+		return profileImg;
+	}
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
+	}
 	
 	@Override
 	public String toString() {
 		return "Reply [replyNo=" + replyNo + ", boardNo=" + boardNo + ", memberNo=" + memberNo + ", content=" + content
-				+ ", createDate=" + createDate + ", secret=" + secret + "]";
+				+ ", createDate=" + createDate + ", secret=" + secret + ", title=" + title + ", category=" + category
+				+ ", titleImg=" + titleImg + ", profileImg=" + profileImg + "]";
 	}
 }

@@ -8,20 +8,76 @@
 							MEMBER_PWD,
 							ADDRESS,
 							EMAIL,
-							ENROLL_DATE)
+							ENROLL_DATE,
+							PROFILE_IMG,
+							UPDATE_DATE)
 					VALUES(SEQ_MNO.NEXTVAL,
 							?,
 							?,
 							?,
 							?,
+							SYSDATE,
+							'resources/css_img/basic_img.png',
 							SYSDATE)
 	</entry>
 	
 	<!-- 로그인 -->
 	<entry key="loginMember">
-		SELECT *
+		SELECT MEMBER_NO, MEMBER_ID, MEMBER_PWD, ADDRESS, EMAIL, TO_CHAR(ENROLL_DATE, 'YYYY-MM-DD') "ENROLL_DATE",
+				PROFILE_IMG, TO_CHAR(UPDATE_DATE, 'YYYY-MM-DD') "UPDATE_DATE"
 		FROM MEMBER
 		WHERE MEMBER_ID = ?
 		AND MEMBER_PWD = ?
+	</entry>
+	
+	<!-- 정보수정 -->
+	<entry key="updateMember">
+		UPDATE MEMBER
+		SET MEMBER_PWD = ?,
+			ADDRESS = ?,
+			EMAIL = ?,
+			PROFILE_IMG = ?,
+			UPDATE_DATE = SYSDATE
+		WHERE MEMBER_NO = ?
+	</entry>
+	
+	<!-- 회원의 게시글 총 수 -->
+	<entry key="boardTotalCount">
+		SELECT COUNT(*) COUNT
+		FROM BOARD
+		WHERE MEMBER_NO = ?
+	</entry>
+	
+	<!-- 회원이 작성한 게시글 리스트 -->
+	<entry key="selectBoardList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT BOARD_NO, MEMBER_NO, CATEGORY, TITLE, COUNT, AT_PATH||AT_CHANGE "TITLEIMG"
+		                FROM BOARD B
+		                JOIN MEMBER USING(MEMBER_NO)
+		                JOIN ATTACHMENT USING(BOARD_NO)
+		                WHERE MEMBER_NO = ?
+		                ORDER BY CREATE_DATE DESC)A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<!-- 회원의 댓글총 수 -->
+	<entry key="replyTotalCount">
+		SELECT COUNT(*) COUNT
+		FROM REPLY
+		WHERE MEMBER_NO = ?
+	</entry>
+	
+	<!-- 회원이 작성한 댓글 리스트 -->
+	<entry key="selectReplyList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT REPLY_NO, BOARD_NO, R.MEMBER_NO, TITLE, CATEGORY, R.CONTENT, AT_PATH||AT_CHANGE "TITLEIMG"
+		                FROM REPLY R
+		                JOIN ATTACHMENT USING(BOARD_NO)
+		                JOIN BOARD B USING(BOARD_NO)
+		                WHERE R.MEMBER_NO =?
+		                ORDER BY R.CREATE_DATE DESC)A)
+		WHERE RNUM BETWEEN ? AND ?
 	</entry>
 </properties>

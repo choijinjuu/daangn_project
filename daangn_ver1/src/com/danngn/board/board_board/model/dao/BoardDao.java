@@ -145,35 +145,6 @@ private Properties prop = new Properties();
 		return result;
 	}
 
-	//중고거래 총 게시물 수
-//	public int totalFleaListCount(Connection conn) {
-//		
-//		int listCount = 0;
-//		ResultSet rset = null;
-//		Statement stmt = null;
-//		
-//		String sql = prop.getProperty("fleaTotalCount");
-//		
-//		try {
-//			stmt = conn.createStatement();
-//			
-//			rset = stmt.executeQuery(sql);
-//			
-//			if(rset.next()) {
-//				listCount = rset.getInt("COUNT");
-//			}
-//			
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}finally {
-//			JDBCTemplate.close(rset);
-//			JDBCTemplate.close(stmt);
-//		}
-//		
-//		return listCount;
-//	}
-	
 	//게시글 총 게시물 수
 	public int totalListCount(Connection conn, int category) {
 		
@@ -244,46 +215,36 @@ private Properties prop = new Properties();
 		
 		return listCount;
 	}
-
-	//중고거래 리스트
-//	public ArrayList<Board> selectFleatList(Connection conn, PageInfo pi) {
-//
-//		ArrayList<Board> list = new ArrayList<>();
-//		PreparedStatement pstmt = null;
-//		ResultSet rset = null;
-//		
-//		String sql = prop.getProperty("selectFleaList");
-//		
-//		try {
-//			int startRow = (pi.getCurrentPage()-1) * pi.getBoardLimit()+1;
-//			int endRow = (startRow+pi.getBoardLimit())-1;
-//			
-//			pstmt = conn.prepareStatement(sql);
-//				pstmt.setInt(1, startRow);
-//				pstmt.setInt(2, endRow);
-//		
-//			rset = pstmt.executeQuery();
-//			
-//			while(rset.next()) {
-//				list.add(new Board(rset.getInt("BOARD_NO"),
-//								rset.getInt("MEMBER_NO"),
-//								rset.getString("TITLE"),
-//								rset.getInt("COUNT"),
-//								rset.getString("CATEGORY"),
-//								rset.getInt("PRICE"),
-//								rset.getString("ADDRESS"),
-//								rset.getString("TITLEIMG")));
-//			}
-//			
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}finally {
-//			JDBCTemplate.close(rset);
-//			JDBCTemplate.close(pstmt);
-//		}
-//		return list;
-//	}
+	//알바 주소 검색시 총 게시글 수
+	public int totalListCount(Connection conn, int category, String search) {
+		
+		int listCount = 0;
+		ResultSet rset = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("jobTotalCount");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, category);
+				pstmt.setString(2, search);
+				
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				listCount = rset.getInt("COUNT");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return listCount;
+	}
 
 	//게시글 리스트
 	public ArrayList<Board> selectBoardList(Connection conn, int category, PageInfo pi) {
@@ -418,19 +379,45 @@ private Properties prop = new Properties();
 							rset.getString("ADDRESS"),
 							rset.getString("TITLEIMG")));
 				}
-			}else {
-				//알바 중 서브 주소 검색시 게시글 리스트 담기
-				//추후 고쳐야됨!!!
-				while(rset.next()) {
-					list.add(new Board(rset.getInt("BOARD_NO"),
-							rset.getInt("MEMBER_NO"),
-							rset.getString("TITLE"),
-							rset.getInt("COUNT"),
-							rset.getString("SUB_CATEGORY"),
-							rset.getInt("PRICE"),
-							rset.getString("ADDRESS"),
-							rset.getString("TITLEIMG")));
-				}
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return list;
+	}
+	//알바 카테고리 검색시 리스트
+	public ArrayList<Board> selectBoardList(Connection conn, int category, String search, PageInfo pi) {
+		
+		ArrayList<Board> list = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectJobCateList");
+		
+		try {
+			int startRow = (pi.getCurrentPage()-1) * pi.getBoardLimit()+1;
+			int endRow = (startRow+pi.getBoardLimit())-1;
+			
+			pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, category);
+				pstmt.setString(2, search);
+				pstmt.setInt(3, startRow);
+				pstmt.setInt(4, endRow);
+		
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				list.add(new Board(rset.getInt("BOARD_NO"),
+									rset.getInt("MEMBER_NO"),
+									rset.getString("TITLE"),
+									rset.getString("CATEGORY"),
+									rset.getString("ADDRESS"),
+									rset.getString("TITLEIMG")));
 			}
 			
 		} catch (SQLException e) {
@@ -447,7 +434,7 @@ private Properties prop = new Properties();
 	public Board BoardDetail(Connection conn, int cate, int boardNo) {
 		
 		Board b = null;
-		String sql = prop.getProperty("boardDetail");
+		String sql = "";
 		ResultSet rset = null;
 		PreparedStatement pstmt = null;
 		
@@ -482,8 +469,8 @@ private Properties prop = new Properties();
 									rset.getInt("PRICE"),
 									rset.getString("SUB_CATEGORY"),
 									rset.getString("ADDRESS"),
-									rset.getString("PROFILE_IMG"),
-									rset.getString("TITLEIMG"));
+									rset.getString("TITLEIMG"),
+									rset.getString("PROFILE_IMG"));
 				}
 			}else if(cate==2) {
 				//동네가게 상세페이지 보드 담기
@@ -510,13 +497,11 @@ private Properties prop = new Properties();
 									rset.getString("WRITER"),
 									rset.getString("TITLE"),
 									rset.getString("CONTENT"),
-									rset.getInt("COUNT"),
 									rset.getString("CATEGORY"),
-									rset.getInt("PRICE"),
-									rset.getString("SUB_CATEGORY"),
 									rset.getString("ADDRESS"),
-									rset.getString("PROFILE_IMG"),
-									rset.getString("TITLEIMG"));
+									rset.getString("JOB_DATE"),
+									rset.getString("TITLEIMG"),
+									rset.getString("PROFILE_IMG"));
 				}
 			}
 			

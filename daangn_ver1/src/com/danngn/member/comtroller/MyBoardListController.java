@@ -1,4 +1,4 @@
-package com.danngn.board.board_board.controller;
+package com.danngn.member.comtroller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,20 +11,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.danngn.board.board_board.model.service.BoardService;
 import com.danngn.board.board_board.model.vo.Board;
+import com.danngn.board.board_reply.model.vo.Reply;
 import com.danngn.common.vo.PageInfo;
+import com.danngn.member.model.service.MemberService;
+import com.danngn.member.model.vo.Member;
 
 /**
- * Servlet implementation class JobsFormController
+ * Servlet implementation class MyBoardListController
  */
-//알바 페이지로
-@WebServlet("/jobsListForm.bo")
-public class JobsListFormController extends HttpServlet {
+//나의 게시글 리스트
+@WebServlet("/myBoard.me")
+public class MyBoardListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public JobsListFormController() {
+    public MyBoardListController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,7 +36,7 @@ public class JobsListFormController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
 		//페이징바 처리
 		int listCount; //현재 총 게시글의 개수
 		int currentPage; //현재 페이지
@@ -47,22 +50,16 @@ public class JobsListFormController extends HttpServlet {
 		PageInfo pi = null;
 		ArrayList<Board> list = null;
 		
-		int category = Integer.parseInt(request.getParameter("cate"));
-		String search = request.getParameter("search");
-		int subCategory = Integer.parseInt(request.getParameter("subCategory"));
-		
+		//세션에 담겨있는 로그인 유저 가져오기
+		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		int memberNo = loginMember.getMemberNo();
+
 		//게시글 총 수 구하기
-		if(category==3 && subCategory==0) {
-			//전체 알바 리스트
-			listCount = new BoardService().totalListCount(category);
-		}else {
-			//주소로 검색시
-			listCount = new BoardService().totalListCount(category, search);
-		}
+		listCount = new MemberService().BoardListCount(memberNo);
 		
 		currentPage = Integer.parseInt(request.getParameter("currentPage").trim());
 		pageLimit = 10;
-		boardLimit = 10;
+		boardLimit = 5;
 			
 		maxPage = (int)Math.ceil((double)listCount/boardLimit);
 		startPage = (currentPage-1)/pageLimit*pageLimit+1;
@@ -75,26 +72,13 @@ public class JobsListFormController extends HttpServlet {
 		pi = new PageInfo(listCount,currentPage,pageLimit,boardLimit,maxPage,startPage,endPage);
 		
 		//리스트 가져오기
-		if(subCategory==0) {
-			//알바 전체 검색시
-			list = new BoardService().selectBoardList(category, pi);
-			
-			request.setAttribute("list", list);
-			request.setAttribute("pi", pi);
-			request.setAttribute("subCate", subCategory);
-
-		}else {
-			//알바 카테고리 검색시
-			list = new BoardService().selectBoardList(category, search, pi);
-
-			request.setAttribute("list", list);
-			request.setAttribute("pi", pi);
-			request.setAttribute("subCate", subCategory);
-		}
+		list = new MemberService().selectBoardList(memberNo, pi);
 		
+		request.setAttribute("list", list);
+		request.setAttribute("pi", pi);
+
 		//요청 주소로 위임
-		request.getRequestDispatcher("views/board/jobsForm.jsp").forward(request, response);
-				
+		request.getRequestDispatcher("views/member/myBoardList.jsp").forward(request, response);
 	}
 
 	/**

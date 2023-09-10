@@ -44,11 +44,10 @@
 		#flea_profile_area{
 			height: 50px;
 			width: 8%;
-			background-color: blue;
 			margin-top: 15px;
 			border-radius: 100px;
 		}
-		#flea_profile img{
+		#flea_profile_area img{
 			width: 100%;
 			height: 100%;
 			border-radius: 100px;
@@ -152,9 +151,9 @@
 		#witer_img{
 			width: 40px;
 			height: 35px;
-			border-radius: 50px;
 		}
 		#witer_img img{
+			border-radius: 50px;
 			width: 100%;
 			height: 100%;
 		}
@@ -206,10 +205,10 @@
 	
 	<div id="fleaDe_wrap">
 		<div class="flea_all" id="fleaDe_img_area">
-			<img src="<%=contextPath + b.getProfileImg()%>">
+			<img src="<%=contextPath + b.getTitleImg()%>">
 		</div>
 		<div class="flea_all" id="fleaDe_title_area">
-			<div id="flea_profile_area"><img src=""></div>
+			<div id="flea_profile_area"><img src="<%=b.getProfileImg()%>"></div>
 			<div id="flea_id_area">
 				<div id="flea_id"><a><strong><%=b.getWriter() %></strong></a></div>
 				<div id="flea_address"><%=b.getAddress() %></div>
@@ -246,7 +245,7 @@
 					<input type='hidden' value="<%=r.getReplyNo()%>">
 					<div class='writer_profile'>
 						<div id='witer_img'>
-							<img src=''>
+							<img src='<%=r.getProfileImg()%>'>
 						</div>
 						<div>
 							<button><span><strong><%=r.getMemberNo() %></strong></span></button>
@@ -284,7 +283,7 @@
 				<%if (loginMember!=null) {%>
 					<div class="writer_profile">
 						<div id="witer_img">
-							<img src="">
+							<img src="<%=loginMember.getProfile_img()%>">
 						</div>
 						<div><button><span><strong><%=loginMember.getMemberId() %></strong></span></button></div>
 					</div>				
@@ -300,8 +299,14 @@
 					<textarea name="replyContent" id="replyContent" placeholder="우리모두 훈훈해지는 댓글을 남겨주세요!"></textarea>
 				</div>
 				<div id="writer_btn">
-					<button type="button" onclick="insertReply()">글쓰기</button>
-					<button id="reply_secret" onclick="insertReply2()">비밀댓글</button>
+					<%if (loginMember==null) {%>
+						<!-- 로그인하지 않은 회원은 댓글버튼 1개만 보여주기 -->
+						<button type="button" onclick="insertReply()">글쓰기</button>
+					<%}else if(loginMember!=null) {%>
+						<!-- 로그인한 회원은 버튼 두개 다 보여주기 -->
+						<button type="button" onclick="insertReply()">글쓰기</button>
+						<button id="reply_secret" onclick="insertReply2()">비밀댓글</button>
+					<%} %>
 				</div>
 			</div>
 		</div>

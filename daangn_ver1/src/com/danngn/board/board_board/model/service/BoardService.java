@@ -34,18 +34,6 @@ public class BoardService {
 		return result*result2;
 	}
 
-	//중고거래 총 게시물 수
-//	public int totalFleaListCount() {
-//		
-//		Connection conn = JDBCTemplate.getConnection();
-//		
-//		int totalFleaListCount = new BoardDao().totalFleaListCount(conn);
-//		
-//		JDBCTemplate.close(conn);
-//		
-//		return totalFleaListCount;
-//	}
-	
 	//게시글 총 게시물 수
 	public int totalListCount(int category) {
 		
@@ -69,18 +57,17 @@ public class BoardService {
 		
 		return totalListCount;
 	}
-
-	//중고거래 리스트
-//	public ArrayList<Board> selectFleatList(PageInfo pi) {
-//		
-//		Connection conn = JDBCTemplate.getConnection();
-//		
-//		ArrayList<Board> list = new BoardDao().selectFleatList(conn, pi);
-//		
-//		JDBCTemplate.close(conn);
-//		
-//		return list;
-//	}
+	//알바 주소 검색시 총 게시글 수
+	public int totalListCount(int category, String search) {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int totalListCount = new BoardDao().totalListCount(conn, category, search);
+		
+		JDBCTemplate.close(conn);
+		
+		return totalListCount;
+	}
 
 	//카테고리 총 게시글 리스트
 	public ArrayList<Board> selectBoardList(int category, PageInfo pi) {
@@ -105,8 +92,19 @@ public class BoardService {
 		
 		return list;
 	}
+	//알바 카테고리 검색시 리스트
+	public ArrayList<Board> selectBoardList(int category, String search, PageInfo pi) {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		ArrayList<Board> list = new BoardDao().selectBoardList(conn, category, search, pi);
+		
+		JDBCTemplate.close(conn);
+		
+		return list;
+	}
 
-	//중고거래 상세보기
+	//게시글 상세보기
 	public Board BoardDetail(int cate, int boardNo) {
 
 		Connection conn = JDBCTemplate.getConnection();
@@ -158,4 +156,5 @@ public class BoardService {
 		
 		return result*result2;
 	}
+
 }

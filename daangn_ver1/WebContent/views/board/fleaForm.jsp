@@ -227,7 +227,7 @@
 				</div>
 				<div id="content_el">
 					<%for (Board b : list) {%>
-						<div class="box" id="content_el_1" onclick="location.href='<%=contextPath%>/fleaDetail.bo?cate=1&boardNo=<%=b.getBoardNo()%>&memNo=<%=b.getMemberNo()%>'">
+						<div class="box" id="content_el_1" onclick="location.href='<%=contextPath%>/boardDetail.bo?cate=1&boardNo=<%=b.getBoardNo()%>&memNo=<%=b.getMemberNo()%>'">
 							<div id="flea_con">
 								<div id="flea_img">
 									<img src="<%=contextPath + b.getTitleImg()%>">

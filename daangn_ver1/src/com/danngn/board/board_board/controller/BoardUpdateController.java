@@ -42,7 +42,7 @@ public class BoardUpdateController extends HttpServlet {
 		//수정 페이지 들어올시 정보 가져와서 뿌려주기
 		int cate = Integer.parseInt(request.getParameter("category"));
 		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
-		
+
 		Board b = new BoardService().BoardDetail(cate, boardNo);
 		
 		request.setAttribute("board", b);

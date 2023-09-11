@@ -34,19 +34,20 @@ public class ReplyController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		//로그인한 상황에서만 댓글 작성 가능
+
+		//로그인한 상황에서만 댓글 삭제 가능
 		if(request.getParameter("replyNo") != null) {
 			
 			int replyNo = Integer.parseInt(request.getParameter("replyNo"));
 			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 			int memNo = Integer.parseInt(request.getParameter("memNo"));
+			int cate = Integer.parseInt(request.getParameter("cate"));
 			
 			int result = new ReplyService().deleteReply(replyNo);
 
 			if(result > 0) {
 				request.getSession().setAttribute("alertMsg", "댓글 삭제 완료");
-				response.sendRedirect(request.getContextPath()+"/fleaDetail.bo?boardNo=25&memNo=47");
+				response.sendRedirect(request.getContextPath()+"/boardDetail.bo?cate="+cate+"&boardNo="+boardNo+"&memNo="+memNo);
 			}else {
 				request.setAttribute("errorMsg", "댓글 삭제 실패");
 				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);

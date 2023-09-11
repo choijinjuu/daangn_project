@@ -157,4 +157,23 @@ public class BoardService {
 		return result*result2;
 	}
 
+	//조회수 올려주기
+	public int CountUp(int boardNo) {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = new BoardDao().countUp(conn, boardNo);
+
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		//자원 닫기
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
 }

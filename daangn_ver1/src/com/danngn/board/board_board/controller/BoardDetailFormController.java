@@ -59,6 +59,9 @@ public class BoardDetailFormController extends HttpServlet {
 			break;
 			}
 			
+			//조회수도 올려주기
+			new BoardService().CountUp(boardNo);
+			
 			request.setAttribute("Board", b);
 			request.setAttribute("Reply", r);
 			
@@ -84,6 +87,9 @@ public class BoardDetailFormController extends HttpServlet {
 				case "5" : b.setSubCategory("기타");
 						break;
 			}
+			
+			//조회수도 올려주기
+			new BoardService().CountUp(boardNo);
 
 			request.setAttribute("Board", b);
 			request.setAttribute("Reply", r);
@@ -100,6 +106,9 @@ public class BoardDetailFormController extends HttpServlet {
 			
 			request.setAttribute("Board", b);
 			request.setAttribute("Reply", r);
+			
+			//조회수도 올려주기
+			int count = new BoardService().CountUp(boardNo);
 
 			//요청 페이지로 위임
 			request.getRequestDispatcher("views/board/jobsDetailForm.jsp").forward(request, response);

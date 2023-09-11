@@ -109,7 +109,7 @@
 	<%@ include file = "../common/header.jsp" %>
 	<div id="board_wrap">
 		<div id="board_title">
-			<strong>글 등록하기</strong>
+			<strong>글 수정하기</strong>
 		</div>
 		<div id="content_area">
 			<form action="<%=contextPath %>/update.bo?boardNo=<%=b.getBoardNo() %>" method="post" id="content_area_form" enctype="multipart/form-data">
@@ -133,7 +133,14 @@
 									<option value="4">티켓/교환권</option>
 									<option value="5">기타</option>
 								</select>
-						<%}else {%>
+						<%}else if(b.getCategory().equals("2")){%>
+								<select name="subCategory" id="subCategory" class="newSelect">
+									<option value="1">식당</option>
+									<option value="2">카페</option>
+									<option value="3">뷰티/미용</option>
+									<option value="4">운동</option>
+									<option value="5">기타</option>
+								</select>
 						<%} %>
 					</div>
 				</div>		
@@ -169,7 +176,64 @@
 							<textarea name="content" id="content"><%=b.getContent() %></textarea>
 						</div>
 					</div>
-				<%}else {%>
+				<%}else if(b.getCategory().equals("2")){%>
+					<div class="board_area2">
+						<div class="board_area_1 add2"><strong>매장 시간</strong></div>
+						<div class="board_area_2">
+							<select name="open_h" id="open_h">
+								<option value="00">00시</option>
+								<option value="08">08시</option>
+								<option value="09">09시</option>
+								<option value="10">10시</option>
+								<option value="11">11시</option>
+								<option value="12">12시</option>
+							</select>
+							<select name="open_m" id="open_m">
+								<option value="00">00분</option>
+								<option value="10">10분</option>
+								<option value="20">20분</option>
+								<option value="30">30분</option>
+								<option value="40">40분</option>
+								<option value="50">50분</option>
+							</select>
+							<strong> ~ </strong>
+								<select name="close_h" id="close_h">
+								<option value="00">00시</option>
+								<option value="17">17시</option>
+								<option value="18">18시</option>
+								<option value="19">19시</option>
+								<option value="20">20시</option>
+								<option value="21">21시</option>
+							</select>
+							<select name="close_m" id="close_m">
+								<option value="00">00분</option>
+								<option value="10">10분</option>
+								<option value="20">20분</option>
+								<option value="30">30분</option>
+								<option value="40">40분</option>
+								<option value="50">50분</option>
+							</select>
+						</div>
+					</div>
+					<div class="board_area add3" id="content_id">
+						<div class="board_area_1"><strong>내용</strong></div>
+						<div class="board_area_2">
+							<textarea name="content" id="content"><%=b.getContent() %></textarea>
+						</div>
+					</div>
+				<%}else if(b.getCategory().equals("3")) {%>
+					<div class="board_area2">
+						<div class="board_area_1"><strong>근무 날짜</strong></div>
+						<div class="board_area_2 job_area">
+							<input type="date" name="jobDate" id="jobDate">
+						</div>
+					</div>
+					<div class="board_area add3" id="content_id">
+						<div class="board_area_1"><strong>내용</strong></div>
+						<div class="board_area_2">
+							<textarea name="content" id="content"><%=b.getContent() %></textarea>
+						</div>
+					</div>
 				<%} %>
 				<div class="board_area">
 					<div class="board_area_1"><strong>첨부파일</strong></div>
@@ -190,121 +254,6 @@
 	
 	<script>
 		
-		var category = document.getElementById("category");
-		var address = document.getElementById("address");
-		var board_area1 = document.createElement("div");
-		var board_area2 = document.createElement("div");
-		var newSelect = document.createElement("select");
-		/* 카테고리 name 넣어주기 */
-		newSelect.name = "subCategory";
-		
-		/* 대분류 카테고리마다 속성 변경하기 */
-		category.addEventListener("change", function(){
-			
-			if(this.value == "1"){ /* 중고거래 선택시 */
-				
-				/* 주소 불러오기 */
-				address.value="<%=loginMember.getAddress() %>";
-				address.disabled = true;
-				
-				/* 새로운 가격 div 생성 */
-				board_area1.className = "board_area1";
-				board_area1.innerHTML= '<div class="board_area_1">'+
-											'<strong>가격</strong>'+
-										'</div>'+
-										'<div class="board_area_2">'+
-											'<input type="number" name="price" id="price">'+
-										'</div>';
-				document.querySelector(".add1").after(board_area1);
-				
-			}else if(this.value == "2"){ /* 동네가게 선택시 */
-				
-				/* 새로운 카테고리 생성 */
-				newSelect.className = "newSelect";
-				newSelect.innerHTML= '<select name="subCategory" id="subCategory">'+
-										'<option value="1">식당</option>'+
-										'<option value="2">카페</option>'+
-										'<option value="3">뷰티/미용</option>'+
-										'<option value="4">운동</option>'+
-										'<option value="5">기타</option>'+
-									'</select>';
-				document.querySelector("#board_area_2").appendChild(newSelect);
-				
-				/* 입력되어있는 주소 제거 */
-				address.value="";
-				address.disabled = false;
-				
-				/* 새로운 오픈시간 div 생성 */
-				board_area1.className = "board_area2";
-				board_area1.innerHTML= '<div class="board_area_1 add2">'+
-											'<strong>매장 시간</strong>'+
-										'</div>'+
-										'<div class="board_area_2">'+
-											'<select name="open_h" id="open_h">'+
-												'<option value="00">00시</option>'+
-												'<option value="08">08시</option>'+
-												'<option value="09">09시</option>'+
-												'<option value="10">10시</option>'+
-												'<option value="11">11시</option>'+
-												'<option value="12">12시</option>'+
-											'</select>'+
-											'<select name="open_m" id="open_m">'+
-												'<option value="00">00분</option>'+
-												'<option value="10">10분</option>'+
-												'<option value="20">20분</option>'+
-												'<option value="30">30분</option>'+
-												'<option value="40">40분</option>'+
-												'<option value="50">50분</option>'+
-											'</select>'+
-											'<strong> ~ </strong>'+
-												'<select name="close_h" id="close_h">'+
-												'<option value="00">00시</option>'+
-												'<option value="17">17시</option>'+
-												'<option value="18">18시</option>'+
-												'<option value="19">19시</option>'+
-												'<option value="20">20시</option>'+
-												'<option value="21">21시</option>'+
-											'</select>'+
-											'<select name="close_m" id="close_m">'+
-												'<option value="00">00분</option>'+
-												'<option value="10">10분</option>'+
-												'<option value="20">20분</option>'+
-												'<option value="30">30분</option>'+
-												'<option value="40">40분</option>'+
-												'<option value="50">50분</option>'+
-											'</select>'+
-										'</div>';
-				document.querySelector(".add1").after(board_area1);
-				
-			}else if(this.value == "3"){ /* 알바 선택시 */
-				
-				/* 입력되어있는 주소 제거 */
-				address.value="";
-				address.disabled = false;
-				
-				/* 새로운 근무 날짜 div 생성 */
-				board_area1.className = "board_area2";
-				board_area1.innerHTML= '<div class="board_area_1">'+
-											'<strong>근무 날짜</strong>'+
-										'</div>'+
-										'<div class="board_area_2 job_area">'+
-											'<input type="date" name="jobDate" id="jobDate">'+
-										'</div>';
-				document.querySelector(".add1").after(board_area1);
-
-				/* 1차분류 카테고리 삭제 */
-				document.querySelector("#board_area_2").removeChild(newSelect);
-				
-			}else{
-				/* 1차분류 카테고리 삭제 */
-				document.querySelector("#board_area_2").removeChild(newSelect);
-				
-				/* 입력되어있는 주소 제거 */
-				address.value="";
-				address.disabled = false;
-			}
-		})
-		
 		/* 다음 주소 검색 API */
     	function postcode(){
 		    new daum.Postcode({
@@ -315,6 +264,7 @@
 		    }).open();	
     	}
 		
+		/* 값 미리 넣어주기 */
 		<%if (b!=null && b.getCategory().equals("1")) {%>
 			$(function(){
 				//값 집어넣기
@@ -323,9 +273,23 @@
 				$("#title").val('<%=b.getTitle()%>');
 				$("#address").val('<%=b.getAddress()%>');
 			})
+		<%}else if(b!=null && b.getCategory().equals("2")){%>
+			$(function(){
+				//값 집어넣기
+				$("#category").val('<%=b.getCategory()%>').attr("selected","selected");
+				$("#subCategory").val('<%=b.getSubCategory()%>').attr("selected","selected");
+				$("#title").val('<%=b.getTitle()%>');
+				$("#address").val('<%=b.getAddress()%>');
+			})
 		<%}else {%>
-			console.log("222");
-		<%} %>
+			$(function(){
+				//값 집어넣기
+				$("#category").val('<%=b.getCategory()%>').attr("selected","selected");
+				$("#subCategory").val('<%=b.getSubCategory()%>').attr("selected","selected");
+				$("#title").val('<%=b.getTitle()%>');
+				$("#address").val('<%=b.getAddress()%>');
+			})
+		<%}%>
 		
 	</script>
 </body>

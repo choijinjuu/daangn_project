@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import = "com.danngn.member.model.vo.Member"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
 	//프로젝트 contextPath 설정
 	String contextPath = request.getContextPath();
@@ -147,6 +148,7 @@
 		}
 	</script>
 
+    <form action="<%=contextPath %>">
     <div class="menubar_wrap">
         <div class="menubar_el1" id="banner">
             <div id="banner_img"><a href="<%=contextPath %>"><img src="resources/css_img/logo.png" alt="" style="width: 85px; height: 40px;"></a></div>
@@ -157,8 +159,8 @@
             <div id="job"><a href="<%=contextPath %>/jobsListForm.bo?cate=3&currentPage=1&subCategory=0" id="job">알바</a></div>
         </div>
         <div class="menubar_el1" id="search">
-            <div id="search_text"><input type="text" id="text_area" placeholder="&nbsp;물품이나 동네를 검색해보세요!"></div>
-            <div id="search_img"><button><img src="resources/css_img/search_img.png" alt="" style="width: 70%; height: 70%"></button></div>
+            	<div id="search_text"><input type="text" id="text_area" placeholder="&nbsp;물품이나 동네를 검색해보세요!"></div>
+            	<div id="search_img"><button type="submit"><img src="resources/css_img/search_img.png" alt="" style="width: 70%; height: 70%"></button></div>
         </div>
         <div class="menubar_el1" id="loginbar">
         	<!-- 로그인 멤버가 없으면 -->
@@ -174,5 +176,6 @@
         	<%} %>
         </div>
     </div>
+    </form>
 </body>
 </html>

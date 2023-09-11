@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.danngn.member.model.service.MemberService;
 import com.danngn.member.model.vo.Member;
@@ -25,7 +26,7 @@ public class LoginController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

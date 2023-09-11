@@ -93,11 +93,12 @@ public class Board {
 		this.titleImg = titleImg;
 	}
 	//알바 리스트 생성자
-	public Board(int boardNo, int memberNo, String title, String category, String address, String titleImg) {
+	public Board(int boardNo, int memberNo, String title, int count, String category, String address, String titleImg) {
 		super();
 		this.boardNo = boardNo;
 		this.memberNo = memberNo;
 		this.title = title;
+		this.count = count;
 		this.category = category;
 		this.address = address;
 		this.titleImg = titleImg;
@@ -138,13 +139,14 @@ public class Board {
 		this.profileImg = profileImg;
 	}
 	//알바 디테일 게시글 생성자
-	public Board(int boardNo, int memberNo, String writer, String title, String content, String category,
+	public Board(int boardNo, int memberNo, String writer, String title, int count, String content, String category,
 			String address, String jobDate, String titleImg, String profileImg) {
 		super();
 		this.boardNo = boardNo;
 		this.memberNo = memberNo;
 		this.writer = writer;
 		this.title = title;
+		this.count = count;
 		this.content = content;
 		this.category = category;
 		this.address = address;

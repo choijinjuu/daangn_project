@@ -307,6 +307,7 @@ private Properties prop = new Properties();
 					list.add(new Board(rset.getInt("BOARD_NO"),
 							rset.getInt("MEMBER_NO"),
 							rset.getString("TITLE"),
+							rset.getInt("COUNT"),
 							rset.getString("CATEGORY"),
 							rset.getString("ADDRESS"),
 							rset.getString("TITLEIMG")));
@@ -415,6 +416,7 @@ private Properties prop = new Properties();
 				list.add(new Board(rset.getInt("BOARD_NO"),
 									rset.getInt("MEMBER_NO"),
 									rset.getString("TITLE"),
+									rset.getInt("COUNT"),
 									rset.getString("CATEGORY"),
 									rset.getString("ADDRESS"),
 									rset.getString("TITLEIMG")));
@@ -496,6 +498,7 @@ private Properties prop = new Properties();
 									rset.getInt("MEMBER_NO"),
 									rset.getString("WRITER"),
 									rset.getString("TITLE"),
+									rset.getInt("COUNT"),
 									rset.getString("CONTENT"),
 									rset.getString("CATEGORY"),
 									rset.getString("ADDRESS"),
@@ -678,6 +681,29 @@ private Properties prop = new Properties();
 					
 				result = pstmt.executeUpdate();
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	//조회수 올려주기
+	public int countUp(Connection conn, int boardNo) {
+		
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("countUp");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, boardNo);
+				
+			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

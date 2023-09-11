@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.danngn.board.board_board.model.service.BoardService;
 import com.danngn.board.board_board.model.vo.Board;
+import com.danngn.board.board_reply.model.service.ReplyService;
 import com.danngn.common.vo.PageInfo;
 
 /**
@@ -66,7 +67,7 @@ public class FleaListFormController extends HttpServlet {
 		maxPage = (int)Math.ceil((double)listCount/boardLimit);
 		startPage = (currentPage-1)/pageLimit*pageLimit+1;
 		endPage = startPage+pageLimit-1;
-			
+	
 		if(endPage>maxPage) {
 			endPage = maxPage;
 		}
@@ -77,7 +78,7 @@ public class FleaListFormController extends HttpServlet {
 		if(subCategory==0) {
 			//중고거래 전체 검색시
 			list = new BoardService().selectBoardList(category, pi);
-			
+
 			request.setAttribute("list", list);
 			request.setAttribute("pi", pi);
 			request.setAttribute("subCate", subCategory);

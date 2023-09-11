@@ -217,7 +217,7 @@
 						<div id="content_btn_area">
 							<%if (loginMember == null) {%>
 								<!-- 로그인이 안되어있으면 알림창으로 띄워주기 -->
-								<button type="button" onclick="alert('로그인이 필요합니다.')">글쓰기</button>
+								<button type="button" onclick="alert('로그인이 필요합니다.'); location.href='<%=contextPath%>/login.me'">글쓰기</button>
 							<%} else{%>
 								<!-- 로그인 완료시 글작성 페이지로 -->
 								<button type="button" onclick="location.href='<%=contextPath%>/insert.bo'">글쓰기</button>
@@ -234,9 +234,9 @@
 								</div>
 								<div id="flea_text">
 									<div id="flea_title"><%=b.getTitle() %></div>
-									<div id="flea_price"><strong><%=b.getPrice() %></strong>원</div>
+									<div id="flea_price"><strong><fmt:formatNumber value="<%=b.getPrice() %>" pattern="#,###"/></strong>원</div>
 									<div id="flea_address"><%=b.getAddress() %></div>
-									<div id="flea_reply">댓글5 - 조회수 <%=b.getCount() %></div>
+									<div id="flea_reply">조회수 <%=b.getCount() %></div>
 								</div>
 							</div>
 						</div>
@@ -258,5 +258,12 @@
 	</div>
 	
 	<%@ include file = "../../views/common/footer.jsp" %>
+	
+	<script>
+		//카테고리 검색시 값 유지
+		$(function(){
+			$("#subCategory").val("<%=subCate%>").prop("selected", true);
+		})
+	</script>
 </body>
 </html>

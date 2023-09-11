@@ -30,19 +30,32 @@ public class BoardDeleteController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		int cate = Integer.parseInt(request.getParameter("cate"));
 		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 		
 		int result = new BoardService().deleteBoard(boardNo);
 		
 		if(result > 0) {
 			request.getSession().setAttribute("alertMsg", "게시글 삭제 완료");
-			response.sendRedirect(request.getContextPath()+"/List.bo?currentPage=1&category=0");
+			
+			if(cate==1) {
+				//중고거래로 돌려주기
+				response.sendRedirect(request.getContextPath()+"/fleaListForm.bo?cate=1&currentPage=1&subCategory=0");
+			}else if(cate==2) {
+				//동네가게로 돌려주기
+				response.sendRedirect(request.getContextPath()+"/storesListForm.bo?cate=2&currentPage=1&subCategory=0");
+			}else {
+				//알바로 돌려주기
+				response.sendRedirect(request.getContextPath()+"/jobsListForm.bo?cate=3&currentPage=1&subCategory=0");
+			}
+			
 		}else {
 			request.setAttribute("errorMsg", "게시글 삭제 실패");
 			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 		}
 	}
-
+//	storesListForm.bo?cate=2&currentPage=1&subCategory=0
+//	jobsListForm.bo?cate=3&currentPage=1&subCategory=0
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

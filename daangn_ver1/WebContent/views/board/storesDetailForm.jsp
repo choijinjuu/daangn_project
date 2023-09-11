@@ -262,7 +262,7 @@
 			<div id="flea_btn_area">
 				<%if (loginMember!=null && loginMember.getMemberId().equals(b.getWriter())) {%>
 					<!-- 로그인 되어있으며 게시글 작성자일때 -->
-					<button type="button" onclick="location.href='<%=contextPath%>/update.bo?boardNo=<%=b.getBoardNo()%>'">수정</button>
+					<button type="button" onclick="location.href='<%=contextPath%>/update.bo?category=2&boardNo=<%=b.getBoardNo()%>'">수정</button>
 					<button type="button" onclick="boardDelete();">삭제</button>				
 				<%}else if (loginMember!=null && !loginMember.getMemberId().equals(b.getWriter()) || loginMember == null) {%>
 					<!-- 로그인 되어있지만 게시글 작성자가 아닐때
@@ -302,7 +302,7 @@
 							<img src='<%=r.getProfileImg()%>'>
 						</div>
 						<div>
-							<button><span><strong><%=r.getMemberNo() %></strong></span></button>
+							<button><span><strong><%=r.getWriter()%></strong></span></button>
 							<%if (r.getSecret()==2) {%>
 								<img id="secret_img" src="resources/css_img/key_img.png">
 							<%} %>
@@ -310,7 +310,7 @@
 						<!-- 글 작성자 이거나 댓글 작성자일떄 -->
 						<%if (loginMember!=null && r.getMemberNo()==loginMember.getMemberNo() || loginMember!=null && b.getMemberNo()==loginMember.getMemberNo()) {%>
 							<div id='reply_delete_area'>
-								<button type='button' onclick="location.href='<%=contextPath%>/reply.re?replyNo=<%=r.getReplyNo()%>&boardNo=<%=b.getBoardNo()%>&memNo=<%=b.getMemberNo()%>'">삭제</button>
+								<button type='button' onclick="location.href='<%=contextPath%>/reply.re?cate=2&replyNo=<%=r.getReplyNo()%>&boardNo=<%=b.getBoardNo()%>&memNo=<%=b.getMemberNo()%>'">삭제</button>
 							</div>
 						<%}%>
 					</div>
@@ -375,7 +375,7 @@
 			
 			if(result){
 				alert("삭제되었습니다.");
-				location.href = "<%=contextPath%>/delete.bo?boardNo=<%=b.getBoardNo()%>";
+				location.href = "<%=contextPath%>/delete.bo?cate=2&boardNo=<%=b.getBoardNo()%>";
 			}else{
 				alert("삭제가 취소되었습니다.");
 			}

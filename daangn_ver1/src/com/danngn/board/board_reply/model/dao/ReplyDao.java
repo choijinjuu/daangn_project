@@ -75,7 +75,8 @@ public class ReplyDao {
 			while(rset.next()) {
 				rlist.add(new Reply(rset.getInt("REPLY_NO"),
 									rset.getInt("BOARD_NO"),
-									rset.getInt("MEMBER_NO"),
+									rset.getInt("MEMBER_No"),
+									rset.getString("WRITER"),
 									rset.getString("CONTENT"),
 									rset.getString("CREATE_DATE"),
 									rset.getInt("SECRET"),
@@ -114,5 +115,4 @@ public class ReplyDao {
 		}
 		return result;
 	}
-
 }

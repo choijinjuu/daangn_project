@@ -130,7 +130,7 @@
 							<div id="list_cate"><span><strong>알바</strong></span></div>
 						<%} %>
 						<div id="list_title"><span><strong><%=b.getTitle() %></strong></span></div>
-						<div id="list_count"><span>댓글 5 - 조회수 <%=b.getCount() %></span></div>
+						<div id="list_count"><span>조회수 <%=b.getCount() %></span></div>
 					</div>
 				</div>
 				<hr style="width: 700px;">

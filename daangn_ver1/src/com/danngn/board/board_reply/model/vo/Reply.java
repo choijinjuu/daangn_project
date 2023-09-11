@@ -11,6 +11,7 @@ public class Reply {
 	
 	private int replyNo;
 	private int boardNo;
+	private String writer;
 	private int memberNo;
 	private String content;
 	private String createDate;
@@ -37,11 +38,12 @@ public class Reply {
 			this.titleImg = titleImg;
 		}
 		//게시판 중 댓글 목록 생성자
-		public Reply(int replyNo, int boardNo, int memberNo, String content, String createDate, int secret, String profileImg) {
+		public Reply(int replyNo, int boardNo, int memberNo, String writer, String content, String createDate, int secret, String profileImg) {
 			super();
 			this.replyNo = replyNo;
 			this.boardNo = boardNo;
 			this.memberNo = memberNo;
+			this.writer = writer;
 			this.content = content;
 			this.createDate = createDate;
 			this.secret = secret;
@@ -73,6 +75,12 @@ public class Reply {
 	}
 	public void setBoardNo(int boardNo) {
 		this.boardNo = boardNo;
+	}
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
 	}
 	public int getMemberNo() {
 		return memberNo;
@@ -125,8 +133,8 @@ public class Reply {
 	
 	@Override
 	public String toString() {
-		return "Reply [replyNo=" + replyNo + ", boardNo=" + boardNo + ", memberNo=" + memberNo + ", content=" + content
-				+ ", createDate=" + createDate + ", secret=" + secret + ", title=" + title + ", category=" + category
-				+ ", titleImg=" + titleImg + ", profileImg=" + profileImg + "]";
+		return "Reply [replyNo=" + replyNo + ", boardNo=" + boardNo + ", writer=" + writer + ", memberNo=" + memberNo
+				+ ", content=" + content + ", createDate=" + createDate + ", secret=" + secret + ", title=" + title
+				+ ", category=" + category + ", titleImg=" + titleImg + ", profileImg=" + profileImg + "]";
 	}
 }
